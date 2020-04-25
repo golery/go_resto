@@ -21,7 +21,7 @@ class _State extends State<AboutPage> {
             Layout.pad(new Text('Go-Resto',
                 style: new TextStyle(fontSize: 30.0, color: Colors.blue))),
         new Text('Copyright (C) 2018 by Golery.com. All rights reserved.'),
-        new Text('Contact: golery.team@outlook.com  or www.golery.com')
+        new Text('Contact: golery.team@gmail.com  or www.golery.com')
         ],
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center)));

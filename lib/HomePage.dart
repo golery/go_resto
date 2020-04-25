@@ -10,14 +10,14 @@ import 'Persistent.dart';
 class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() {
-    return new _State();
+    return _State();
   }
 }
 
 class _State extends State<HomePage> {
   static bool _init = false;
 
-  Future<bool>_initRepo() async {
+  Future<bool> _initRepo() async {
     if (_init) return false;
 
     try {
@@ -33,43 +33,50 @@ class _State extends State<HomePage> {
 
   void _onStart() async {
     await _initRepo();
-    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-      return new SelectTablePage();
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return SelectTablePage();
     }));
   }
 
   @override
   Widget build(BuildContext context) {
-    TextStyle styleLogo = new TextStyle(
+    TextStyle styleLogo = TextStyle(
         fontSize: 40.0, color: Colors.blue, fontWeight: FontWeight.bold);
-    TextStyle styleButton = new TextStyle(color: Colors.white);
-    var loginButton = new RaisedButton(
-        child: new Text('LOGIN', style: styleButton),
+    TextStyle styleButton = TextStyle(color: Colors.white);
+    var loginButton = RaisedButton(
+        child: Text('LOGIN', style: styleButton),
         color: Colors.blue,
         onPressed: () {
-          Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-            return new ManageTablePage();
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return ManageTablePage();
           }));
         });
-    var demoButton = new RaisedButton(
-        child: new Text('START', style: styleButton),
+    var demoButton = RaisedButton(
+        child: Text('START', style: styleButton),
         color: Colors.blue,
         onPressed: _onStart);
-    return new Scaffold(
-        body: new Row(children: <Widget>[
-      new Expanded(
-          child: new Column(children: <Widget>[
-        new Image.asset(
-          'assets/deux-magots.jpeg',
-          height: 240.0,
-          fit: BoxFit.cover,
-        ),
-        Layout.pad(new Text('GO-RESTO', style: styleLogo),
-            padding: EdgeInsets.only(top: 32.0, bottom: 32.0)),
-//            Layout.pad(new SizedBox(width: 150.0, child: loginButton),
-//                padding: EdgeInsets.only(bottom: 16.0)),
-        new SizedBox(width: 150.0, child: demoButton),
-      ]))
-    ]));
+    return Scaffold(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Padding(
+            child: Image.asset(
+              'assets/landing.jpg',
+              height: 240.0,
+              fit: BoxFit.cover,
+            ),
+            padding: EdgeInsets.all(50),
+          ),
+
+          Column(
+            children: <Widget>[
+              Layout.pad(Text('RESTO ORDER', style: styleLogo),
+                  padding: EdgeInsets.only(top: 32.0, bottom: 32.0)),
+              SizedBox(width: 150.0, child: demoButton),
+            ],
+          )
+        ],
+      ),
+    );
   }
 }

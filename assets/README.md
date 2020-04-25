@@ -1,2 +1,2 @@
-1. assets/deux-magots.jpg
-   https://pixabay.com/en/caf%C3%A9-paris-france-les-deux-magots-535713/
+1. assets/landing.jpg
+   https://www.freepik.com/free-vector/coffee-shop-building-facade-with-signboard_1310934.htm#page=1&query=coffee-shop-building-facade-with-signboard&position=1
