@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:goresto/Constants.dart';
 import 'package:goresto/Model.dart';
 
 class EditOrderItemPage extends StatefulWidget {
@@ -111,19 +112,22 @@ class _State extends State<EditOrderItemPage> {
             width: 100,
             child: Center(
                 child: TextFormField(
-                    controller: quantityController,
-                    keyboardType: TextInputType.number,
-                    maxLength: 2,
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      hintText: "",
-                      counterText: "",
-                      border: new OutlineInputBorder(
-                        borderSide: new BorderSide(),
-                      ),
-                    ),
-                    style:
-                        TextStyle(fontSize: 50, fontWeight: FontWeight.bold)))),
+              controller: quantityController,
+              keyboardType: TextInputType.number,
+              maxLength: 2,
+              textAlign: TextAlign.center,
+              decoration: InputDecoration(
+                hintText: "",
+                counterText: "",
+                border: new OutlineInputBorder(
+                  borderSide: new BorderSide(),
+                ),
+              ),
+              style: TextStyle(
+                  fontSize: 50,
+                  fontWeight: FontWeight.bold,
+                  color: COLOR_QUANTITY),
+            ))),
         IconButton(
           iconSize: 80,
           icon: Icon(Icons.add_circle_outline, color: iconColor),

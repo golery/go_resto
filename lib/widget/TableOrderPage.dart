@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:goresto/Constants.dart';
 import 'package:goresto/service/Navigator.dart';
 import 'package:goresto/widget/EditOrderItemPage.dart';
 
@@ -103,7 +104,7 @@ class _State extends State<TableOrderPage> {
                   style: new TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 25.0,
-                      color: Colors.orange))),
+                      color: COLOR_QUANTITY))),
     );
     var trailing = quantity == null
         ? null
