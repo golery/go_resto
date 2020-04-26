@@ -40,24 +40,28 @@ class _State extends State<EditQuantityPage> {
   _body() {
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SizedBox(height: 30),
-          _quantityWidget(),
-          SizedBox(height: 40),
-          Text(
-            "Notes: ",
-            style: TextStyle(fontSize: 20),
-          ),
-          TextFormField(
-            controller: noteController,
-            maxLines: 3,
-            style: TextStyle(fontSize: 20),
-            decoration: new InputDecoration(
-              hintText: "Notes",
-            ),
-          ),
+      child: ListView(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(height: 30),
+              _quantityWidget(),
+              SizedBox(height: 40),
+              Text(
+                "Notes: ",
+                style: TextStyle(fontSize: 20),
+              ),
+              TextFormField(
+                controller: noteController,
+                maxLines: 3,
+                style: TextStyle(fontSize: 20),
+                decoration: new InputDecoration(
+                  hintText: "Notes",
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );
@@ -119,5 +123,7 @@ class _State extends State<EditQuantityPage> {
     );
   }
 
-  _ok() {}
+  _ok() {
+    Navigator.pop(context);
+  }
 }
