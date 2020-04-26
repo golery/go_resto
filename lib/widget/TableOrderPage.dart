@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:goresto/service/Navigator.dart';
 import 'package:goresto/widget/EditQuantityPage.dart';
+
 import '../Model.dart';
-import '../Utils.dart';
-import '../TableOrderReviewPage.dart';
 import '../Persistent.dart';
+import '../TableOrderReviewPage.dart';
+import '../Utils.dart';
 
 class TableOrderPage extends StatefulWidget {
   final Order order;
@@ -19,31 +20,31 @@ class TableOrderPage extends StatefulWidget {
 
 class _State extends State<TableOrderPage> {
   final Order order;
-  final Map<String, int> newQuantities = {};
+  final Map<String, OrderItem> items = {};
 
   _State(this.order) {
     this
         .order
-        .dishes
-        .forEach((dishId, quantity) => newQuantities[dishId] = quantity);
+        .items
+        .forEach((dishId, item) => items[dishId] = OrderItem.from(item));
   }
 
   void onTapDish(Dish dish) {
     setState(() {
-      var quantity = newQuantities[dish.id];
-      if (quantity == null) {
-        newQuantities[dish.id] = 1;
-      } else {
-        newQuantities[dish.id] = quantity + 1;
+      var item = items[dish.id];
+      if (item == null) {
+        item = OrderItem(dish.id);
+        items[dish.id] = item;
       }
+      ++item.quantity;
     });
   }
 
   void _onReview() async {
     bool confirm = await Navigate.pushPage(
-        context, new TableOrderReviewPage(order, newQuantities));
+        context, new TableOrderReviewPage(order, items));
     if (confirm) {
-      order.dishes = newQuantities;
+      order.items = items;
       Persistent.save();
       Navigator.of(context).pop(order);
     }
@@ -84,13 +85,13 @@ class _State extends State<TableOrderPage> {
         ]));
   }
 
-  void _editItem(dish) {
-    navigatorPush(context, (context) => EditQuantityPage());
+  void _editItem(OrderItem item) {
+    navigatorPush(context, (context) => EditQuantityPage(item));
   }
 
   ListTile _listTitle(dish) {
-    var quantity =
-        newQuantities[dish.id] == null ? null : newQuantities[dish.id];
+    OrderItem item = items[dish.id];
+    num quantity = item?.quantity;
     var leading = SizedBox(
       width: 30,
       child: quantity == null
@@ -106,7 +107,7 @@ class _State extends State<TableOrderPage> {
         ? null
         : OutlineButton.icon(
             onPressed: () {
-              _editItem(dish);
+              _editItem(item);
             },
             icon: Icon(Icons.edit),
             label: Text("Edit"));

@@ -36,7 +36,7 @@ class Serializer {
   }
 
   _orderToJson(Order order) {
-    return {'id': order.id, 'tableId': order.tableId, 'dishes': order.dishes};
+    return {'id': order.id, 'tableId': order.tableId, 'dishes': order.items};
   }
 
   Map<String, dynamic> repoToJson() {
@@ -69,9 +69,9 @@ class Serializer {
   Order _orderFromJson(Map<String, dynamic> map) {
     Order order = new Order(map['tableId']);
     order.id = map['id'];
-    order.dishes = (map['dishes'] as Map<String, dynamic>).map((k, v) {
-      int quantity = v;
-      return new MapEntry(k, quantity);
+    order.items = (map['dishes'] as Map<String, dynamic>).map((k, v) {
+      OrderItem item = OrderItem.fromJson(v);
+      return new MapEntry(k, item);
     });
     return order;
   }

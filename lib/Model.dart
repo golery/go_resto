@@ -1,4 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
 import 'Utils.dart';
+
+part 'Model.g.dart';
 
 class RestoTable {
   String id = Uuid.v4();
@@ -25,10 +29,23 @@ class Dish {
   Dish(this.name, this.price, {this.description, this.fullName});
 }
 
+@JsonSerializable()
 class OrderItem {
   String dishId;
-  num quantity;
+  num quantity = 0;
   String notes;
+
+  OrderItem(this.dishId);
+
+  OrderItem.from(OrderItem other) {
+    dishId = other.dishId;
+    quantity = other.quantity;
+    notes = other.notes;
+  }
+
+  factory OrderItem.fromJson(Map<String, dynamic> json) =>
+      _$OrderItemFromJson(json);
+  Map<String, dynamic> toJson() => _$OrderItemToJson(this);
 }
 
 class Order {
@@ -38,7 +55,7 @@ class Order {
   Order(this.tableId);
 
   // Map from dishId to quantity
-  Map<String, int> dishes = {};
+  Map<String, OrderItem> items = {};
 }
 
 class Repository {

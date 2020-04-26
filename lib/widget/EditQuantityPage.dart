@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:goresto/Model.dart';
 
 class EditQuantityPage extends StatefulWidget {
-  OrderItem _order;
+  OrderItem item;
+
+  EditQuantityPage(this.item);
 
   @override
   _State createState() => _State();
@@ -12,6 +14,12 @@ class EditQuantityPage extends StatefulWidget {
 class _State extends State<EditQuantityPage> {
   final noteController = TextEditingController();
   final quantityController = TextEditingController();
+
+  _State() {
+    OrderItem item = widget.item;
+    noteController.text = "${item.notes}";
+    quantityController.text = "${item.quantity}";
+  }
 
   @override
   void dispose() {

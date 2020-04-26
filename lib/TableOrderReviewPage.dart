@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
+
 import 'Model.dart';
 import 'Utils.dart';
-import 'ManageTablePage.dart';
-import 'ManageMenuPage.dart';
 
 class TableOrderReviewPage extends StatefulWidget {
   final Order order;
-  final Map<String, int> newQuantities;
+  final Map<String, OrderItem> items;
 
-  TableOrderReviewPage(this.order, this.newQuantities);
+  TableOrderReviewPage(this.order, this.items);
 
   @override
   State<TableOrderReviewPage> createState() {
-    return new _State(order, newQuantities);
+    return new _State(order, items);
   }
 }
 
 class _State extends State<TableOrderReviewPage> {
   final Order order;
-  final Map<String, int> newQuantities;
+  final Map<String, OrderItem> items;
 
-  _State(this.order, this.newQuantities);
+  _State(this.order, this.items);
 
   Widget _formatQuantity(int oldValue, int newValue) {
     if (oldValue == null) oldValue = 0;
@@ -41,11 +40,11 @@ class _State extends State<TableOrderReviewPage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> children = [];
-    bool newOrder = order.dishes.isEmpty;
+    bool newOrder = order.items.isEmpty;
     Repository.get().dishCategories.forEach((category) {
       category.dishes.forEach((dish) {
-        var oldQuantity = order.dishes[dish.id];
-        var newQuantity = newQuantities[dish.id];
+        var oldQuantity = order.items[dish.id].quantity;
+        var newQuantity = items[dish.id].quantity;
         if (newQuantity == null && oldQuantity == null) return;
 
         Widget trailing;

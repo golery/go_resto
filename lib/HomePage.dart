@@ -1,11 +1,12 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
-import 'Model.dart';
-import 'Utils.dart';
+
+import 'package:flutter/material.dart';
+
 import 'ManageTablePage.dart';
-import 'SelectTablePage.dart';
-import 'dart:io';
+import 'Model.dart';
 import 'Persistent.dart';
+import 'SelectTablePage.dart';
+import 'Utils.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -23,7 +24,7 @@ class _State extends State<HomePage> {
     try {
       await Persistent.load();
       _init = true;
-    } on FileSystemException {
+    } catch (e) {
       _init = true;
       Repository.get().setSampleData();
       Persistent.save();
@@ -67,7 +68,6 @@ class _State extends State<HomePage> {
             ),
             padding: EdgeInsets.all(50),
           ),
-
           Column(
             children: <Widget>[
               Layout.pad(Text('RESTO ORDER', style: styleLogo),
