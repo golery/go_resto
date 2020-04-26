@@ -15,10 +15,12 @@ class _State extends State<EditQuantityPage> {
   final noteController = TextEditingController();
   final quantityController = TextEditingController();
 
-  _State() {
+  @override
+  void initState() {
     OrderItem item = widget.item;
-    noteController.text = "${item.notes}";
+    noteController.text = "${item.notes ?? ""}";
     quantityController.text = "${item.quantity}";
+    super.initState();
   }
 
   @override
@@ -30,8 +32,6 @@ class _State extends State<EditQuantityPage> {
 
   @override
   Widget build(BuildContext context) {
-    noteController.text = "ada";
-    quantityController.text = "12";
     return Scaffold(
       appBar: AppBar(
         title: Text("Edit item"),

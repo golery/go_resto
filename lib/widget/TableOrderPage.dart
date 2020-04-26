@@ -85,7 +85,8 @@ class _State extends State<TableOrderPage> {
         ]));
   }
 
-  void _editItem(OrderItem item) {
+  void _editItem(String dishId) {
+    OrderItem item = items[dishId];
     navigatorPush(context, (context) => EditQuantityPage(item));
   }
 
@@ -107,7 +108,7 @@ class _State extends State<TableOrderPage> {
         ? null
         : OutlineButton.icon(
             onPressed: () {
-              _editItem(item);
+              _editItem(dish.id);
             },
             icon: Icon(Icons.edit),
             label: Text("Edit"));
