@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'Model.dart';
-import 'Utils.dart';
-import 'TableOrderReviewPage.dart';
-import 'Persistent.dart';
+import '../Model.dart';
+import '../Utils.dart';
+import '../TableOrderReviewPage.dart';
+import '../Persistent.dart';
 
 class TableOrderPage extends StatefulWidget {
   final Order order;
