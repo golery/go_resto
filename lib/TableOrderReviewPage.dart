@@ -31,10 +31,13 @@ class _State extends State<TableOrderReviewPage> {
     var diffTextStyle = new TextStyle(
         fontWeight: FontWeight.bold, fontSize: 25.0, color: Colors.orange);
 
-    return new Row(children: <Widget>[
-      oldValueText,
-      new Text(diffText, style: diffTextStyle)
-    ]);
+    return SizedBox(
+      width: 100,
+      child: Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
+        oldValueText,
+        new Text(diffText, style: diffTextStyle)
+      ]),
+    );
   }
 
   @override
@@ -43,8 +46,9 @@ class _State extends State<TableOrderReviewPage> {
     bool newOrder = order.items.isEmpty;
     Repository.get().dishCategories.forEach((category) {
       category.dishes.forEach((dish) {
-        var oldQuantity = order.items[dish.id].quantity;
-        var newQuantity = items[dish.id].quantity;
+        var oldQuantity = order.items[dish.id]?.quantity;
+        var newItem = items[dish.id];
+        var newQuantity = newItem?.quantity;
         if (newQuantity == null && oldQuantity == null) return;
 
         Widget trailing;
@@ -57,8 +61,11 @@ class _State extends State<TableOrderReviewPage> {
         } else {
           trailing = _formatQuantity(oldQuantity, newQuantity);
         }
-        children
-            .add(new ListTile(title: new Text(dish.name), trailing: trailing));
+        String notes = newItem?.notes;
+        children.add(new ListTile(
+            title: new Text(dish.name),
+            subtitle: notes == null ? null : Text(notes),
+            trailing: trailing));
       });
     });
     return new Scaffold(

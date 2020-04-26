@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'widget/TableOrderPage.dart';
-import 'Model.dart';
-import 'Utils.dart';
+
+import 'AboutPage.dart';
 import 'ManageMenuPage.dart';
 import 'ManageTablePage.dart';
-import 'AboutPage.dart';
+import 'Model.dart';
 import 'Persistent.dart';
+import 'Utils.dart';
+import 'widget/TableOrderPage.dart';
 
 class SelectTablePage extends StatefulWidget {
   @override
@@ -54,7 +55,7 @@ class SelectTablePageState extends State<SelectTablePage> {
       padding: EdgeInsets.zero,
       children: <Widget>[
         new DrawerHeader(
-          child: new Text('GO-RESTO',
+          child: new Text('RESTAURANT',
               style: new TextStyle(color: Colors.white, fontSize: 35.0)),
           decoration: new BoxDecoration(
             color: Colors.blue,
@@ -62,15 +63,15 @@ class SelectTablePageState extends State<SelectTablePage> {
         ),
         new ListTile(
           title: new Text('Manage tables'),
-          onTap: ()=> Navigate.pushPage(context, new ManageTablePage()),
+          onTap: () => Navigate.pushPage(context, new ManageTablePage()),
         ),
         new ListTile(
           title: new Text('Manage menu'),
-          onTap: ()=> Navigate.pushPage(context, new ManageMenuPage()),
+          onTap: () => Navigate.pushPage(context, new ManageMenuPage()),
         ),
         new ListTile(
           title: new Text('About'),
-          onTap: ()=> Navigate.pushPage(context, new AboutPage()),
+          onTap: () => Navigate.pushPage(context, new AboutPage()),
         )
       ],
     ));

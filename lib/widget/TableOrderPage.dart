@@ -93,7 +93,8 @@ class _State extends State<TableOrderPage> {
 
   ListTile _listTitle(dish) {
     OrderItem item = items[dish.id];
-    num quantity = item?.quantity;
+    String notes = item?.notes;
+    num quantity = item?.quantity ?? 0;
     quantity = quantity == 0 ? null : quantity;
     var leading = SizedBox(
       width: 30,
@@ -115,7 +116,8 @@ class _State extends State<TableOrderPage> {
             icon: Icon(Icons.edit),
             label: Text("Edit"));
     return new ListTile(
-      title: new Text(dish.name),
+      title: Text(dish.name),
+      subtitle: notes == null ? null : Text(notes),
       leading: leading,
       trailing: trailing,
       onTap: () => onTapDish(dish),
