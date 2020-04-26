@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:goresto/service/Navigator.dart';
+import 'package:goresto/widget/EditQuantityPage.dart';
 import '../Model.dart';
 import '../Utils.dart';
 import '../TableOrderReviewPage.dart';
@@ -82,6 +84,10 @@ class _State extends State<TableOrderPage> {
         ]));
   }
 
+  void _editItem(dish) {
+    navigatorPush(context, (context) => EditQuantityPage());
+  }
+
   ListTile _listTitle(dish) {
     var quantity =
         newQuantities[dish.id] == null ? null : newQuantities[dish.id];
@@ -99,7 +105,11 @@ class _State extends State<TableOrderPage> {
     var trailing = quantity == null
         ? null
         : OutlineButton.icon(
-            onPressed: () {}, icon: Icon(Icons.edit), label: Text("Edit"));
+            onPressed: () {
+              _editItem(dish);
+            },
+            icon: Icon(Icons.edit),
+            label: Text("Edit"));
     return new ListTile(
       title: new Text(dish.name),
       leading: leading,

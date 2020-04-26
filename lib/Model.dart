@@ -1,5 +1,4 @@
 import 'Utils.dart';
-import 'dart:convert';
 
 class RestoTable {
   String id = Uuid.v4();
@@ -24,6 +23,12 @@ class Dish {
   String fullName;
 
   Dish(this.name, this.price, {this.description, this.fullName});
+}
+
+class OrderItem {
+  String dishId;
+  num quantity;
+  String notes;
 }
 
 class Order {
