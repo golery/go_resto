@@ -46,7 +46,7 @@ class _State extends State<TableOrderReviewPage> {
     bool newOrder = order.items.isEmpty;
     Repository.get().dishCategories.forEach((category) {
       category.dishes.forEach((dish) {
-        var oldQuantity = order.items[dish.id]?.quantity;
+        var oldQuantity = order.findItemByDishId(dish.id)?.quantity;
         var newItem = items[dish.id];
         var newQuantity = newItem?.quantity;
         if (newQuantity == null && oldQuantity == null) return;

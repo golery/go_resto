@@ -24,10 +24,11 @@ class _State extends State<TableOrderPage> {
   final Map<String, OrderItem> items = {};
 
   _State(this.order) {
+    if (order.items == null) order.items = [];
     this
         .order
         .items
-        .forEach((dishId, item) => items[dishId] = OrderItem.from(item));
+        .forEach((item) => items[item.dishId] = OrderItem.from(item));
   }
 
   void onTapDish(Dish dish) {
@@ -44,8 +45,8 @@ class _State extends State<TableOrderPage> {
   void _onReview() async {
     bool confirm = await Navigate.pushPage(
         context, new TableOrderReviewPage(order, items));
-    if (confirm) {
-      order.items = items;
+    if (confirm != null && confirm) {
+      order.items = items.values.toList();
       Persistent.save();
       Navigator.of(context).pop(order);
     }

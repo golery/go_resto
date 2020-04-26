@@ -4,21 +4,34 @@ import 'Utils.dart';
 
 part 'Model.g.dart';
 
+@JsonSerializable()
 class RestoTable {
   String id = Uuid.v4();
   String name;
 
   RestoTable(this.name);
+
+  factory RestoTable.fromJson(Map<String, dynamic> json) =>
+      _$RestoTableFromJson(json);
+
+  Map<String, dynamic> toJson() => _$RestoTableToJson(this);
 }
 
+@JsonSerializable()
 class DishCategory {
   String id = Uuid.v4();
   String name;
   List<Dish> dishes = [];
 
   DishCategory(this.name, this.dishes);
+
+  factory DishCategory.fromJson(Map<String, dynamic> json) =>
+      _$DishCategoryFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DishCategoryToJson(this);
 }
 
+@JsonSerializable()
 class Dish {
   String id = Uuid.v4();
   String name;
@@ -27,6 +40,10 @@ class Dish {
   String fullName;
 
   Dish(this.name, this.price, {this.description, this.fullName});
+
+  factory Dish.fromJson(Map<String, dynamic> json) => _$DishFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DishToJson(this);
 }
 
 @JsonSerializable()
@@ -45,17 +62,41 @@ class OrderItem {
 
   factory OrderItem.fromJson(Map<String, dynamic> json) =>
       _$OrderItemFromJson(json);
+
   Map<String, dynamic> toJson() => _$OrderItemToJson(this);
 }
 
+@JsonSerializable()
 class Order {
   String id = Uuid.v4();
   final String tableId;
 
   Order(this.tableId);
 
-  // Map from dishId to quantity
-  Map<String, OrderItem> items = {};
+  List<OrderItem> items = [];
+
+  factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
+
+  Map<String, dynamic> toJson() => _$OrderToJson(this);
+
+  findItemByDishId(String dishId) {
+    return items.firstWhere((o) => o.dishId == dishId, orElse: () => null);
+  }
+}
+
+/// This object is written to file
+@JsonSerializable()
+class Persistence {
+  List<RestoTable> tables;
+  List<DishCategory> categories;
+  List<Order> orders;
+
+  Persistence();
+
+  factory Persistence.fromJson(Map<String, dynamic> json) =>
+      _$PersistenceFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PersistenceToJson(this);
 }
 
 class Repository {
@@ -65,6 +106,8 @@ class Repository {
     return _instance;
   }
 
+  List<RestoTable> tables;
+  List<DishCategory> dishCategories;
   Map<String, Order> currentOrders = {};
 
   void setSampleData() {
@@ -97,7 +140,4 @@ class Repository {
   void setCurrentOrder(String tableId, Order order) {
     currentOrders[tableId] = order;
   }
-
-  List<RestoTable> tables;
-  List<DishCategory> dishCategories;
 }
