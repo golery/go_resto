@@ -55,35 +55,20 @@ class _State extends State<TableOrderPage> {
 
   @override
   Widget build(BuildContext context) {
-    var dishListTiles = Repository
-        .get()
+    var dishListTiles = Repository.get()
         .dishCategories
         .map((category) => new ExpansionTile(
             title: new Text(category.name),
             initiallyExpanded: true,
-            children: category.dishes.map((dish) {
-              var quantity = newQuantities[dish.id] == null
-                  ? null
-                  : newQuantities[dish.id];
-              var trailing = quantity == null
-                  ? null
-                  : new Text('${quantity}',
-                      style: new TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25.0,
-                          color: Colors.orange));
-              return new ListTile(
-                title: new Text(dish.name),
-                trailing: trailing,
-                onTap: () => onTapDish(dish),
-              );
-            }).toList()))
+            children: category.dishes.map(_listTitle).toList()))
         .toList();
     var listView = new ListView(children: dishListTiles);
     return new Scaffold(
         appBar: new AppBar(
           title: new Text('Table Order'),
-          actions: [new IconButton(icon: new Icon(Icons.delete), onPressed: _onDelete)],
+          actions: [
+            new IconButton(icon: new Icon(Icons.delete), onPressed: _onDelete)
+          ],
         ),
         body: new Column(children: <Widget>[
           new Expanded(child: listView),
@@ -91,8 +76,35 @@ class _State extends State<TableOrderPage> {
             Layout.pad(new RaisedButton(
                 child: new Text('REVIEW'), onPressed: _onReview)),
             Layout.pad(new RaisedButton(
-                child: new Text('CANCEL'), onPressed: () => Navigator.of(context).pop()))
+                child: new Text('CANCEL'),
+                onPressed: () => Navigator.of(context).pop()))
           ])
         ]));
+  }
+
+  ListTile _listTitle(dish) {
+    var quantity =
+        newQuantities[dish.id] == null ? null : newQuantities[dish.id];
+    var leading = SizedBox(
+      width: 30,
+      child: quantity == null
+          ? null
+          : Center(
+              child: Text('${quantity}',
+                  style: new TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25.0,
+                      color: Colors.orange))),
+    );
+    var trailing = quantity == null
+        ? null
+        : IconButton(
+            onPressed: () {}, icon: Icon(Icons.edit));
+    return new ListTile(
+      title: new Text(dish.name),
+      leading: leading,
+      trailing: trailing,
+      onTap: () => onTapDish(dish),
+    );
   }
 }
