@@ -55,8 +55,11 @@ class SelectTablePageState extends State<SelectTablePage> {
       padding: EdgeInsets.zero,
       children: <Widget>[
         new DrawerHeader(
-          child: new Text('RESTAURANT',
-              style: new TextStyle(color: Colors.white, fontSize: 35.0)),
+          child: new Text('ORDER',
+              style: new TextStyle(
+                  color: Colors.white,
+                  fontSize: 35.0,
+                  fontWeight: FontWeight.bold)),
           decoration: new BoxDecoration(
             color: Colors.blue,
           ),
