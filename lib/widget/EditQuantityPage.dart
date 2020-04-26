@@ -46,10 +46,14 @@ class _State extends State<EditQuantityPage> {
           SizedBox(height: 30),
           _quantityWidget(),
           SizedBox(height: 40),
-          Text("Notes: "),
+          Text(
+            "Notes: ",
+            style: TextStyle(fontSize: 20),
+          ),
           TextFormField(
             controller: noteController,
             maxLines: 3,
+            style: TextStyle(fontSize: 20),
             decoration: new InputDecoration(
               hintText: "Notes",
             ),
