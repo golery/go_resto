@@ -98,8 +98,8 @@ class _State extends State<TableOrderPage> {
     );
     var trailing = quantity == null
         ? null
-        : IconButton(
-            onPressed: () {}, icon: Icon(Icons.edit));
+        : OutlineButton.icon(
+            onPressed: () {}, icon: Icon(Icons.edit), label: Text("Edit"));
     return new ListTile(
       title: new Text(dish.name),
       leading: leading,
