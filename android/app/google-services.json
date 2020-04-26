@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "505922694164",
+    "firebase_url": "https://golery-resto.firebaseio.com",
+    "project_id": "golery-resto",
+    "storage_bucket": "golery-resto.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505922694164:android:27f74c4913d67aa4538b01",
+        "android_client_info": {
+          "package_name": "com.golery.goresto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "505922694164-i4n3rokp14k73i2u5fnm0k4dbdgmeb9d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5cAl5el2Vl88z5S7DnKPMZ8BwHZSOrXU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "505922694164-i4n3rokp14k73i2u5fnm0k4dbdgmeb9d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
