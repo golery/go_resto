@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:goresto/service/Navigator.dart';
-import 'package:goresto/widget/EditQuantityPage.dart';
+import 'package:goresto/widget/EditOrderItemPage.dart';
 
 import '../Model.dart';
 import '../Persistent.dart';
@@ -87,12 +87,13 @@ class _State extends State<TableOrderPage> {
 
   void _editItem(String dishId) {
     OrderItem item = items[dishId];
-    navigatorPush(context, (context) => EditQuantityPage(item));
+    navigatorPush(context, (context) => EditOrderItemPage(item));
   }
 
   ListTile _listTitle(dish) {
     OrderItem item = items[dish.id];
     num quantity = item?.quantity;
+    quantity = quantity == 0 ? null : quantity;
     var leading = SizedBox(
       width: 30,
       child: quantity == null

@@ -2,16 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:goresto/Model.dart';
 
-class EditQuantityPage extends StatefulWidget {
+class EditOrderItemPage extends StatefulWidget {
   OrderItem item;
 
-  EditQuantityPage(this.item);
+  EditOrderItemPage(this.item);
 
   @override
   _State createState() => _State();
 }
 
-class _State extends State<EditQuantityPage> {
+class _State extends State<EditOrderItemPage> {
   final noteController = TextEditingController();
   final quantityController = TextEditingController();
 
@@ -94,6 +94,7 @@ class _State extends State<EditQuantityPage> {
   }
 
   Row _quantityWidget() {
+    var iconColor = Color.fromRGBO(80, 80, 80, 1);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -102,7 +103,7 @@ class _State extends State<EditQuantityPage> {
           iconSize: 80,
           icon: Icon(
             Icons.remove_circle_outline,
-            color: Colors.black,
+            color: iconColor,
           ),
           onPressed: _remove,
         ),
@@ -121,10 +122,11 @@ class _State extends State<EditQuantityPage> {
                         borderSide: new BorderSide(),
                       ),
                     ),
-                    style: TextStyle(fontSize: 50)))),
+                    style:
+                        TextStyle(fontSize: 50, fontWeight: FontWeight.bold)))),
         IconButton(
           iconSize: 80,
-          icon: Icon(Icons.add_circle_outline, color: Colors.black),
+          icon: Icon(Icons.add_circle_outline, color: iconColor),
           onPressed: _add,
         ),
       ],
@@ -132,6 +134,12 @@ class _State extends State<EditQuantityPage> {
   }
 
   _ok() {
+    int qty = int.tryParse(quantityController.text);
+    if (qty == null) return;
+
+    widget.item.quantity = qty;
+    widget.item.notes = noteController.text;
+
     Navigator.pop(context);
   }
 }
