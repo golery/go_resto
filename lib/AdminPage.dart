@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'Model.dart';
-import 'Utils.dart';
-import 'ManageTablePage.dart';
+import 'package:goresto/service/Navigator.dart';
+
 import 'ManageMenuPage.dart';
+import 'ManageTablePage.dart';
 
 class AdminPage extends StatefulWidget {
   @override
@@ -23,15 +23,15 @@ class _AdminPageState extends State<AdminPage> {
               new RaisedButton(
                   child: new Text('Manage table'),
                   onPressed: () {
-                    Navigator
-                        .of(context)
+                    Navigator.of(context)
                         .push(new MaterialPageRoute(builder: (context) {
                       return new ManageTablePage();
                     }));
                   }),
               new RaisedButton(
                   onPressed: () {
-                    Navigate.pushPage(context, new ManageMenuPage());
+                    Navigate.push(context, Screen.ManageMenuPage,
+                        (context) => ManageMenuPage());
                   },
                   child: new Text('Manage menu')),
             ],

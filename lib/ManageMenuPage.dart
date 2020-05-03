@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'Model.dart';
-import 'Utils.dart';
-import 'EditTable.dart';
+import 'package:goresto/service/Navigator.dart';
+
 import 'EditMenuCategoryPage.dart';
+import 'Model.dart';
 import 'Persistent.dart';
+import 'Utils.dart';
 
 class ManageMenuPage extends StatefulWidget {
   @override
@@ -14,15 +15,18 @@ class ManageMenuPage extends StatefulWidget {
 
 class _ManageMenuPageState extends State<ManageMenuPage> {
   void _onSelectCategory(DishCategory category) async {
-    var result = await Navigate.pushPage(context, new EditMenuCategoryPage(category));
+    var result = await Navigate.push(context, Screen.EditMenuCategoryPage,
+        (context) => EditMenuCategoryPage(category));
     if (result == 'DELETE') {
       Repository.get().dishCategories.remove(category);
       Persistent.save();
     }
   }
+
   void _onAdd() async {
     DishCategory category = new DishCategory('Category', []);
-    var result = await Navigate.pushPage(context, new EditMenuCategoryPage(category));
+    var result = await Navigate.push(context, Screen.EditMenuCategoryPage,
+        (context) => EditMenuCategoryPage(category));
     if (result != null) {
       Repository.get().dishCategories.add(category);
       Persistent.save();
@@ -31,7 +35,8 @@ class _ManageMenuPageState extends State<ManageMenuPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> texts = Repository.get().dishCategories
+    List<Widget> texts = Repository.get()
+        .dishCategories
         .map((category) => new ListTile(
               title: new Text(category.name),
               leading: new Icon(Icons.restaurant, color: Colors.blue),

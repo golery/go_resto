@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'Model.dart';
-import 'Utils.dart';
+import 'package:goresto/service/Navigator.dart';
+
 import 'EditTable.dart';
+import 'Model.dart';
 import 'Persistent.dart';
+import 'Utils.dart';
 
 class ManageTablePage extends StatefulWidget {
   @override
@@ -13,7 +15,8 @@ class ManageTablePage extends StatefulWidget {
 
 class _ManageTablePageState extends State<ManageTablePage> {
   void _onSelectTable(RestoTable table) async {
-    var result = await Navigate.pushPage(context, new EditTablePage(table));
+    var result = await Navigate.push(
+        context, Screen.EditTablePage, (context) => EditTablePage(table));
     if (result == 'DELETE') {
       Repository.get().tables.remove(table);
       Persistent.save();
@@ -24,23 +27,19 @@ class _ManageTablePageState extends State<ManageTablePage> {
 
   void _onAdd() async {
     RestoTable table = new RestoTable('Table');
-    var result = await Navigator.of(context).push(
-        new MaterialPageRoute(builder: (buildContext) {
-          return new EditTablePage(table);
-        }));
+    var result = await Navigator.of(context)
+        .push(new MaterialPageRoute(builder: (buildContext) {
+      return new EditTablePage(table);
+    }));
     if (result != null && result != 'DELETE') {
-      Repository
-          .get()
-          .tables
-          .add(table);
+      Repository.get().tables.add(table);
       Persistent.save();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> texts = Repository
-        .get()
+    List<Widget> texts = Repository.get()
         .tables
         .map((table) => new ListTile(
               title: new Text(table.name),
@@ -59,7 +58,8 @@ class _ManageTablePageState extends State<ManageTablePage> {
         ),
         body: new Column(children: <Widget>[
           new Expanded(child: Layout.pad(list)),
-          Layout.pad(new RaisedButton(child: new Text('Add'), onPressed: _onAdd)),
+          Layout.pad(
+              new RaisedButton(child: new Text('Add'), onPressed: _onAdd)),
         ]));
   }
 }

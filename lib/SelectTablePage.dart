@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:goresto/service/Navigator.dart';
 
 import 'AboutPage.dart';
 import 'ManageMenuPage.dart';
@@ -21,8 +22,8 @@ class SelectTablePageState extends State<SelectTablePage> {
     if (order == null) {
       order = new Order(table.id);
     }
-    var widget = new TableOrderPage(order);
-    var result = await Navigate.pushPage(context, widget);
+    var result = await Navigate.push(
+        context, Screen.ManageTablePage, (context) => TableOrderPage(order));
     if (result != null) {
       Repository.get().setCurrentOrder(table.id, result);
       Persistent.save();
@@ -66,15 +67,18 @@ class SelectTablePageState extends State<SelectTablePage> {
         ),
         new ListTile(
           title: new Text('Manage tables'),
-          onTap: () => Navigate.pushPage(context, new ManageTablePage()),
+          onTap: () => Navigate.push(
+              context, Screen.ManageTablePage, (context) => ManageTablePage()),
         ),
         new ListTile(
           title: new Text('Manage menu'),
-          onTap: () => Navigate.pushPage(context, new ManageMenuPage()),
+          onTap: () => Navigate.push(
+              context, Screen.ManageMenuPage, (context) => ManageMenuPage()),
         ),
         new ListTile(
           title: new Text('About'),
-          onTap: () => Navigate.pushPage(context, new AboutPage()),
+          onTap: () => Navigate.push(
+              context, Screen.AboutPage, (context) => AboutPage()),
         )
       ],
     ));

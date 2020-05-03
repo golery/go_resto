@@ -43,8 +43,8 @@ class _State extends State<TableOrderPage> {
   }
 
   void _onReview() async {
-    bool confirm = await Navigate.pushPage(
-        context, new TableOrderReviewPage(order, items));
+    bool confirm = await Navigate.push(context, Screen.TableOrderReviewPage,
+        (context) => TableOrderReviewPage(order, items));
     if (confirm != null && confirm) {
       order.items = items.values.toList();
       Persistent.save();
@@ -89,7 +89,8 @@ class _State extends State<TableOrderPage> {
 
   void _editItem(String dishId) {
     OrderItem item = items[dishId];
-    navigatorPush(context, (context) => EditOrderItemPage(item));
+    Navigate.push(context, Screen.EditOrderItemPage,
+        (context) => EditOrderItemPage(item));
   }
 
   ListTile _listTitle(dish) {
