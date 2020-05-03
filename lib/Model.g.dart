@@ -71,10 +71,10 @@ Map<String, dynamic> _$OrderItemToJson(OrderItem instance) => <String, dynamic>{
 
 Order _$OrderFromJson(Map<String, dynamic> json) {
   return Order(
-    json['seqId'] as num,
     json['tableId'] as String,
   )
     ..id = json['id'] as String
+    ..seqId = json['seqId'] as num
     ..items = (json['items'] as List)
         ?.map((e) =>
             e == null ? null : OrderItem.fromJson(e as Map<String, dynamic>))

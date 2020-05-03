@@ -70,10 +70,10 @@ class OrderItem {
 @JsonSerializable()
 class Order {
   String id = Uuid.v4();
-  final num seqId;
+  num seqId;
   final String tableId;
 
-  Order(this.seqId, this.tableId);
+  Order(this.tableId);
 
   List<OrderItem> items = [];
 

@@ -20,14 +20,12 @@ class SelectTablePageState extends State<SelectTablePage> {
   void _onSelectTable(RestoTable table) async {
     var order = Repository.get().getCurrentOrder(table.id);
     if (order == null) {
-      // FIXME: new id is not save, thus potentially duplicated.
-      // Need a better to manage id
-      var seqId = Repository.get().orderIdSeq++;
-      order = new Order(seqId, table.id);
+      order = new Order(table.id);
     }
-    var result = await Navigate.push(
+    Order result = await Navigate.push(
         context, Screen.ManageTablePage, (context) => TableOrderPage(order));
     if (result != null) {
+      result.seqId = Repository.get().orderIdSeq++;
       Repository.get().setCurrentOrder(table.id, result);
       Persistent.save();
     }
@@ -46,14 +44,32 @@ class SelectTablePageState extends State<SelectTablePage> {
         subtitle = new Text('Free', style: subtitleFreeStyle);
       else
         subtitle = new Text('Serving...', style: subtitleServingStyle);
+      var title = table.name;
+      if (order?.seqId != null) {
+        title += ': Order #${order.seqId}';
+      }
       return new ListTile(
-          title: new Text(table.name),
+          title: new Text(title),
           subtitle: subtitle,
           leading: new Icon(Icons.receipt, color: Colors.blue),
           onTap: () {
             _onSelectTable(table);
           });
     }).toList();
+    Drawer drawer = _drawer(context);
+
+    ListView list = new ListView(children: texts);
+    return new Scaffold(
+        drawer: drawer,
+        appBar: new AppBar(
+          title: new Text('Choose table'),
+        ),
+        body: new Column(children: <Widget>[
+          new Expanded(child: Layout.pad(list)),
+        ]));
+  }
+
+  Drawer _drawer(BuildContext context) {
     var drawer = new Drawer(
         child: new ListView(
       padding: EdgeInsets.zero,
@@ -85,15 +101,6 @@ class SelectTablePageState extends State<SelectTablePage> {
         )
       ],
     ));
-
-    ListView list = new ListView(children: texts);
-    return new Scaffold(
-        drawer: drawer,
-        appBar: new AppBar(
-          title: new Text('Choose table'),
-        ),
-        body: new Column(children: <Widget>[
-          new Expanded(child: Layout.pad(list)),
-        ]));
+    return drawer;
   }
 }
