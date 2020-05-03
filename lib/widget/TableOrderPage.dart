@@ -68,9 +68,12 @@ class _State extends State<TableOrderPage> {
             children: category.dishes.map(_listTitle).toList()))
         .toList();
     var listView = new ListView(children: dishListTiles);
+    var orderIdTxt = widget.order.seqId == null
+        ? 'Create Order'
+        : "Order # ${widget.order.seqId}";
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text('Order #${widget.order.seqId}'),
+          title: new Text(orderIdTxt),
           actions: [
             new IconButton(icon: new Icon(Icons.delete), onPressed: _onDelete)
           ],
