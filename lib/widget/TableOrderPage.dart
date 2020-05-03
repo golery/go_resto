@@ -58,6 +58,10 @@ class _State extends State<TableOrderPage> {
     Navigator.of(context).pop();
   }
 
+  bool hasItem() {
+    return items.values.any((item) => item.quantity > 0);
+  }
+
   @override
   Widget build(BuildContext context) {
     var dishListTiles = Repository.get()
@@ -82,7 +86,8 @@ class _State extends State<TableOrderPage> {
           new Expanded(child: listView),
           new Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Layout.pad(new RaisedButton(
-                child: new Text('REVIEW'), onPressed: _onReview)),
+                child: new Text('REVIEW'),
+                onPressed: hasItem() ? _onReview : null)),
             Layout.pad(new RaisedButton(
                 child: new Text('CANCEL'),
                 onPressed: () => Navigator.of(context).pop()))
