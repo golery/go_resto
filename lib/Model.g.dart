@@ -9,13 +9,16 @@ part of 'Model.dart';
 RestoTable _$RestoTableFromJson(Map<String, dynamic> json) {
   return RestoTable(
     json['name'] as String,
-  )..id = json['id'] as String;
+  )
+    ..id = json['id'] as String
+    ..orderId = json['orderId'] as String;
 }
 
 Map<String, dynamic> _$RestoTableToJson(RestoTable instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'orderId': instance.orderId,
     };
 
 DishCategory _$DishCategoryFromJson(Map<String, dynamic> json) {
@@ -68,6 +71,7 @@ Map<String, dynamic> _$OrderItemToJson(OrderItem instance) => <String, dynamic>{
 
 Order _$OrderFromJson(Map<String, dynamic> json) {
   return Order(
+    json['seqId'] as num,
     json['tableId'] as String,
   )
     ..id = json['id'] as String
@@ -79,6 +83,7 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
       'id': instance.id,
+      'seqId': instance.seqId,
       'tableId': instance.tableId,
       'items': instance.items,
     };
@@ -96,7 +101,8 @@ Persistence _$PersistenceFromJson(Map<String, dynamic> json) {
     ..orders = (json['orders'] as List)
         ?.map(
             (e) => e == null ? null : Order.fromJson(e as Map<String, dynamic>))
-        ?.toList();
+        ?.toList()
+    ..orderIdSeq = json['orderIdSeq'] as num;
 }
 
 Map<String, dynamic> _$PersistenceToJson(Persistence instance) =>
@@ -104,4 +110,5 @@ Map<String, dynamic> _$PersistenceToJson(Persistence instance) =>
       'tables': instance.tables,
       'categories': instance.categories,
       'orders': instance.orders,
+      'orderIdSeq': instance.orderIdSeq,
     };

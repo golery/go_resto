@@ -8,6 +8,7 @@ part 'Model.g.dart';
 class RestoTable {
   String id = Uuid.v4();
   String name;
+  String orderId;
 
   RestoTable(this.name);
 
@@ -69,9 +70,10 @@ class OrderItem {
 @JsonSerializable()
 class Order {
   String id = Uuid.v4();
+  final num seqId;
   final String tableId;
 
-  Order(this.tableId);
+  Order(this.seqId, this.tableId);
 
   List<OrderItem> items = [];
 
@@ -90,6 +92,7 @@ class Persistence {
   List<RestoTable> tables;
   List<DishCategory> categories;
   List<Order> orders;
+  num orderIdSeq;
 
   Persistence();
 
@@ -109,6 +112,7 @@ class Repository {
   List<RestoTable> tables;
   List<DishCategory> dishCategories;
   Map<String, Order> currentOrders = {};
+  num orderIdSeq = 1;
 
   void setSampleData() {
     tables = [

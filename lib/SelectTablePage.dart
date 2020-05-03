@@ -20,7 +20,10 @@ class SelectTablePageState extends State<SelectTablePage> {
   void _onSelectTable(RestoTable table) async {
     var order = Repository.get().getCurrentOrder(table.id);
     if (order == null) {
-      order = new Order(table.id);
+      // FIXME: new id is not save, thus potentially duplicated.
+      // Need a better to manage id
+      var seqId = Repository.get().orderIdSeq++;
+      order = new Order(seqId, table.id);
     }
     var result = await Navigate.push(
         context, Screen.ManageTablePage, (context) => TableOrderPage(order));

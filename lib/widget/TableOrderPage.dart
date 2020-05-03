@@ -70,7 +70,7 @@ class _State extends State<TableOrderPage> {
     var listView = new ListView(children: dishListTiles);
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text('Table Order'),
+          title: new Text('Order #${widget.order.seqId}'),
           actions: [
             new IconButton(icon: new Icon(Icons.delete), onPressed: _onDelete)
           ],

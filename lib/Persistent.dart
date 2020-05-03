@@ -14,6 +14,7 @@ class Persistent {
     persistence.categories = repo.dishCategories;
     persistence.tables = repo.tables;
     persistence.orders = repo.currentOrders.values.toList();
+    persistence.orderIdSeq = repo.orderIdSeq;
 
     var jsonTxt = json.encode(persistence.toJson());
     Storage.get().write(FILE, jsonTxt);
