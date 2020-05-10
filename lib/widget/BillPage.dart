@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:goresto/Model.dart';
+import 'package:intl/intl.dart';
 
 class BillPage extends StatefulWidget {
   Order order;
@@ -12,6 +13,7 @@ class BillPage extends StatefulWidget {
 
 class _State extends State<BillPage> {
   final TextStyle style = TextStyle(fontSize: 20);
+  final formatter = NumberFormat("###.00", "en_US");
 
   @override
   Widget build(BuildContext context) {
@@ -32,19 +34,24 @@ class _State extends State<BillPage> {
     return ListView(
       padding: EdgeInsets.all(20),
       children: <Widget>[
-        Container(
-          height: 10,
-          decoration: new BoxDecoration(color: Colors.black),
-        ),
+        _bar(),
         SizedBox(height: 5),
         ..._items(),
+        _row("Subtotal", formatter.format(10)),
+        _row("VAT 10%", formatter.format(10)),
+        _row("Tip 10%", formatter.format(10)),
+        SizedBox(height: 15),
         ..._sum(),
         SizedBox(height: 5),
-        Container(
-          height: 10,
-          decoration: new BoxDecoration(color: Colors.black),
-        ),
+        _bar(),
       ],
+    );
+  }
+
+  Container _bar() {
+    return Container(
+      height: 10,
+      decoration: new BoxDecoration(color: Colors.black),
     );
   }
 
@@ -53,7 +60,7 @@ class _State extends State<BillPage> {
     final repo = Repository.get();
     return order.items.map((item) {
       var dish = repo.getDish(item.dishId);
-      return _row(dish.name, "\$ ${dish.price}");
+      return _row(dish.name, formatter.format(dish.price));
     }).toList();
   }
 
@@ -71,9 +78,7 @@ class _State extends State<BillPage> {
 
   List<Widget> _sum() {
     return [
-      _row("VAT 10%", "\$ 15"),
-      _row("Tip 10%", "\$ 15"),
-      _row("Total 10%", "\$ 15"),
+      _row("Total 10%", formatter.format(10)),
     ];
   }
 

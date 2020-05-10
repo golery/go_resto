@@ -28,6 +28,7 @@ dependencies:
   uuid: any
   path_provider: any
   firebase_analytics: any
+  intl: any
 
 dev_dependencies:
   flutter_test:
