@@ -125,7 +125,7 @@ class _State extends State<TableOrderPage> {
             },
             icon: Icon(Icons.edit),
             label: Text("Edit"));
-    return new ListTile(
+    return ListTile(
       title: Text(dish.name),
       subtitle: notes == null ? null : Text(notes),
       leading: leading,

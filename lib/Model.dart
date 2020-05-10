@@ -115,11 +115,7 @@ class Repository {
   num orderIdSeq = 1;
 
   void setSampleData() {
-    tables = [
-      new RestoTable('Table 1'),
-      new RestoTable('Table 2'),
-      new RestoTable('Table 3')
-    ];
+    tables = [new RestoTable('A'), new RestoTable('B'), new RestoTable('C')];
 
     dishCategories = [
       new DishCategory('Plates', [
@@ -143,5 +139,11 @@ class Repository {
 
   void setCurrentOrder(String tableId, Order order) {
     currentOrders[tableId] = order;
+  }
+
+  Dish getDish(String dishId) {
+    return dishCategories
+        .map((cat) => cat.dishes.firstWhere((dish) => dish.id == dishId))
+        .firstWhere((dish) => dish != null, orElse: null);
   }
 }

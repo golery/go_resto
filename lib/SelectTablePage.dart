@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:goresto/service/Navigator.dart';
+import 'package:goresto/widget/TablePage.dart';
 
 import 'AboutPage.dart';
 import 'ManageMenuPage.dart';
@@ -7,7 +8,6 @@ import 'ManageTablePage.dart';
 import 'Model.dart';
 import 'Persistent.dart';
 import 'Utils.dart';
-import 'widget/TableOrderPage.dart';
 
 class SelectTablePage extends StatefulWidget {
   @override
@@ -23,7 +23,7 @@ class SelectTablePageState extends State<SelectTablePage> {
       order = new Order(table.id);
     }
     Order result = await Navigate.push(
-        context, Screen.ManageTablePage, (context) => TableOrderPage(order));
+        context, Screen.ManageTablePage, (context) => TablePage(table));
     if (result != null) {
       result.seqId = Repository.get().orderIdSeq++;
       Repository.get().setCurrentOrder(table.id, result);
