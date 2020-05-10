@@ -31,17 +31,19 @@ class _State extends State<BillPage> {
   }
 
   Widget _body() {
+    num subTotal = _subTotalAmount();
     return ListView(
       padding: EdgeInsets.all(20),
       children: <Widget>[
         _bar(),
         SizedBox(height: 5),
         ..._items(),
-        _row("Subtotal", formatter.format(10)),
-        _row("VAT 10%", formatter.format(10)),
-        _row("Tip 10%", formatter.format(10)),
         SizedBox(height: 15),
-        ..._sum(),
+        _row("Subtotal", formatter.format(subTotal)),
+        _row("VAT 10%", formatter.format(subTotal * 0.1)),
+        _row("Gratuity 10%", formatter.format(subTotal * 0.1)),
+        SizedBox(height: 15),
+        _row("Total", formatter.format(subTotal * 1.2)),
         SizedBox(height: 5),
         _bar(),
       ],
@@ -55,12 +57,25 @@ class _State extends State<BillPage> {
     );
   }
 
+  num _subTotalAmount() {
+    final order = widget.order;
+    final repo = Repository.get();
+    return order.items.map((item) {
+      var dish = repo.getDish(item.dishId);
+      return item.quantity * dish.price;
+    }).reduce((a, b) => a + b);
+  }
+
   List<Widget> _items() {
     final order = widget.order;
     final repo = Repository.get();
     return order.items.map((item) {
       var dish = repo.getDish(item.dishId);
-      return _row(dish.name, formatter.format(dish.price));
+      var text = dish.name;
+      if (item.quantity > 1) {
+        text += " (${item.quantity} x ${formatter.format(dish.price)})";
+      }
+      return _row(text, formatter.format(dish.price * item.quantity));
     }).toList();
   }
 
@@ -74,12 +89,6 @@ class _State extends State<BillPage> {
         ],
       ),
     );
-  }
-
-  List<Widget> _sum() {
-    return [
-      _row("Total 10%", formatter.format(10)),
-    ];
   }
 
   _ok() {
