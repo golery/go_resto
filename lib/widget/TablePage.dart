@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:goresto/Model.dart';
 import 'package:goresto/service/Navigator.dart';
+import 'package:goresto/widget/BillPage.dart';
 import 'package:goresto/widget/TableOrderPage.dart';
 
 class TablePage extends StatefulWidget {
@@ -64,6 +65,7 @@ class _State extends State<TablePage> {
             ),
             RaisedButton(
               child: Text('BILL'),
+              onPressed: _bill,
             ),
             RaisedButton(
               child: Text('CLOSE'),
@@ -77,13 +79,20 @@ class _State extends State<TablePage> {
 
   _edit() async {
     var table = widget.table;
-    var order = Repository.get().getCurrentOrder(table.orderId);
+    var order = Repository.get().getCurrentOrder(table.id);
     if (order == null) {
       order = new Order(table.id);
     }
     order = await Navigate.push(
         context, Screen.EditOrderItemPage, (context) => TableOrderPage(order));
     Repository.get().setCurrentOrder(table.id, order);
+  }
+
+  _bill() {
+    var table = widget.table;
+    var order = Repository.get().getCurrentOrder(table.id);
+    if (order == null) return;
+    Navigate.push(context, Screen.BillPage, (context) => BillPage(order));
   }
 
   _ok() {}

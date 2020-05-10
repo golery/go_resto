@@ -10,7 +10,8 @@ enum Screen {
   AboutPage,
   EditDishPage,
   EditMenuCategoryPage,
-  EditTablePage
+  EditTablePage,
+  BillPage
 }
 
 class Navigate {
