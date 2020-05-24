@@ -54,10 +54,12 @@ class EditTableState extends State<EditTablePage> {
         children: <Widget>[
           new TextFormField(
             decoration: new InputDecoration(labelText: 'Table name'),
+            maxLength: 2,
             controller: nameController,
           ),
           new TextFormField(
             decoration: new InputDecoration(labelText: 'Max people'),
+            maxLength: 2,
             keyboardType: TextInputType.number,
             controller: maxPeopleController,
           ),
