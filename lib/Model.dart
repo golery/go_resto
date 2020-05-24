@@ -146,8 +146,9 @@ class Repository {
 
   Dish getDish(String dishId) {
     return dishCategories
-        .map((cat) => cat.dishes.firstWhere((dish) => dish.id == dishId))
-        .firstWhere((dish) => dish != null, orElse: null);
+        .map((cat) => cat.dishes
+            .firstWhere((dish) => dish.id == dishId, orElse: () => null))
+        .firstWhere((dish) => dish != null, orElse: () => null);
   }
 
   void closeTable(String tableId) {

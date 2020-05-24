@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:goresto/Model.dart';
+import 'package:goresto/Persistent.dart';
 import 'package:goresto/service/Navigator.dart';
 import 'package:goresto/widget/BillPage.dart';
 import 'package:goresto/widget/TableOrderPage.dart';
@@ -42,7 +43,7 @@ class _State extends State<TablePage> {
 
   String _statusText(ItemStatus status) {
     if (status == ItemStatus.COOK) {
-      return "Cooking";
+      return "Cook";
     }
     if (status == ItemStatus.READY) {
       return "Ready";
@@ -50,7 +51,33 @@ class _State extends State<TablePage> {
     if (status == ItemStatus.SERVED) {
       return "Served";
     }
-    return "Ordering";
+    return "Order";
+  }
+
+  Color _statusColor(ItemStatus status) {
+    if (status == ItemStatus.COOK) {
+      return Colors.orange;
+    }
+    if (status == ItemStatus.READY) {
+      return Colors.green;
+    }
+    if (status == ItemStatus.SERVED) {
+      return Colors.grey;
+    }
+    return Colors.amberAccent;
+  }
+
+  IconData _statusIcon(ItemStatus status) {
+    if (status == ItemStatus.COOK) {
+      return Icons.delete_sweep;
+    }
+    if (status == ItemStatus.READY) {
+      return Icons.notifications;
+    }
+    if (status == ItemStatus.SERVED) {
+      return Icons.restaurant;
+    }
+    return Icons.event_note;
   }
 
   List<Widget> _list() {
@@ -66,7 +93,19 @@ class _State extends State<TablePage> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             RaisedButton(
-              child: Text(_statusText(item.status)),
+              color: _statusColor(item.status),
+              child: SizedBox(
+                  width: 75,
+                  child: Row(
+                    children: <Widget>[
+                      Icon(_statusIcon(item.status)),
+                      SizedBox(width: 5),
+                      Text(
+                        _statusText(item.status),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  )),
               onPressed: () => _changeStatus(item),
             )
           ],
@@ -95,6 +134,7 @@ class _State extends State<TablePage> {
     setState(() {
       item.status = next;
     });
+    Persistent.save();
   }
 
   Widget _emptyTable() {
@@ -178,7 +218,7 @@ class _State extends State<TablePage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            SizedBox(height: 5),
+            SizedBox(height: 10),
             Icon(icon),
             SizedBox(height: 5),
             Text(text),
