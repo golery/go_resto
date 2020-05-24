@@ -18,20 +18,7 @@ class _State extends State<TableGridItem> {
   @override
   Widget build(BuildContext context) {
     var table = widget.table;
-    var subtitleFreeStyle = const TextStyle(
-        color: Colors.grey, fontSize: 10.0, fontStyle: FontStyle.italic);
-    var subtitleServingStyle = const TextStyle(
-        color: Colors.green, fontSize: 15.0, fontStyle: FontStyle.italic);
-    Order order = Repository.get().getCurrentOrder(table.id);
-    Widget statusTxt;
-    if (order == null)
-      statusTxt = new Text('Free', style: subtitleFreeStyle);
-    else
-      statusTxt = new Text('Serving...', style: subtitleServingStyle);
-    var title = table.name;
-    if (order?.seqId != null) {
-      title += ': Order #${order.seqId}';
-    }
+    Widget statusTxt = _statusText(table);
     var inner = Column(children: <Widget>[
       Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,6 +58,21 @@ class _State extends State<TableGridItem> {
             ),
           ],
         ));
+  }
+
+  Widget _statusText(RestoTable table) {
+    const double fontSize = 15.0;
+    var subtitleFreeStyle = const TextStyle(
+        color: Colors.green, fontSize: fontSize, fontStyle: FontStyle.normal);
+    var subtitleServingStyle = const TextStyle(
+        color: Colors.red, fontSize: fontSize, fontStyle: FontStyle.normal);
+    Order order = Repository.get().getCurrentOrder(table.id);
+    Widget statusTxt;
+    if (order == null)
+      statusTxt = new Text('Free', style: subtitleFreeStyle);
+    else
+      statusTxt = new Text('Occupied', style: subtitleServingStyle);
+    return statusTxt;
   }
 
   _onSelectTable(RestoTable table) {
