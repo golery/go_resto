@@ -37,7 +37,7 @@ class SelectTablePageState extends State<SelectTablePage> {
     var subtitleFreeStyle = const TextStyle(
         color: Colors.grey, fontSize: 10.0, fontStyle: FontStyle.italic);
     var subtitleServingStyle = const TextStyle(
-        color: Colors.green, fontSize: 10.0, fontStyle: FontStyle.italic);
+        color: Colors.green, fontSize: 15.0, fontStyle: FontStyle.italic);
     Order order = Repository.get().getCurrentOrder(table.id);
     Widget subtitle;
     if (order == null)
@@ -53,16 +53,21 @@ class SelectTablePageState extends State<SelectTablePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
-              child: Column(
+              child: Text("${table.name}",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30))),
+          Column(
             children: <Widget>[
               Icon(Icons.people_outline),
               Text("3 pp"),
             ],
             crossAxisAlignment: CrossAxisAlignment.start,
-          )),
-          Text("${table.name}",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
+          )
         ],
+      ),
+      SizedBox(height: 20),
+      Row(
+        children: <Widget>[subtitle],
+        mainAxisAlignment: MainAxisAlignment.center,
       ),
     ]);
     return Container(
@@ -73,7 +78,7 @@ class SelectTablePageState extends State<SelectTablePage> {
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
+              color: Colors.grey.withOpacity(0.2),
               spreadRadius: 0,
               blurRadius: 8,
               offset: Offset(2, 2), // changes position of shadow

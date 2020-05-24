@@ -14,7 +14,7 @@ class Application extends StatelessWidget {
     return new MaterialApp(
         title: 'Resto Waiter',
         theme: new ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.green,
         ),
         debugShowCheckedModeBanner: false,
         navigatorObservers: [
