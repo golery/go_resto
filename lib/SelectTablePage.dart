@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:goresto/service/Navigator.dart';
+import 'package:goresto/widget/TableGridItem.dart';
 import 'package:goresto/widget/TablePage.dart';
 
 import 'AboutPage.dart';
@@ -33,64 +34,10 @@ class SelectTablePageState extends State<SelectTablePage> {
     }
   }
 
-  Widget _table(RestoTable table) {
-    var subtitleFreeStyle = const TextStyle(
-        color: Colors.grey, fontSize: 10.0, fontStyle: FontStyle.italic);
-    var subtitleServingStyle = const TextStyle(
-        color: Colors.green, fontSize: 15.0, fontStyle: FontStyle.italic);
-    Order order = Repository.get().getCurrentOrder(table.id);
-    Widget subtitle;
-    if (order == null)
-      subtitle = new Text('Free', style: subtitleFreeStyle);
-    else
-      subtitle = new Text('Serving...', style: subtitleServingStyle);
-    var title = table.name;
-    if (order?.seqId != null) {
-      title += ': Order #${order.seqId}';
-    }
-    var inner = Column(children: <Widget>[
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Expanded(
-              child: Text("${table.name}",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30))),
-          Column(
-            children: <Widget>[
-              Icon(Icons.people_outline),
-              Text("${table.maxPeople} pp"),
-            ],
-            crossAxisAlignment: CrossAxisAlignment.start,
-          )
-        ],
-      ),
-      SizedBox(height: 20),
-      Row(
-        children: <Widget>[subtitle],
-        mainAxisAlignment: MainAxisAlignment.center,
-      ),
-    ]);
-    return Container(
-        child: InkWell(child: inner, onTap: () => _onSelectTable(table)),
-        padding: EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26.withOpacity(0.4),
-              spreadRadius: 0,
-              blurRadius: 8,
-              offset: Offset(2, 2), // changes position of shadow
-            ),
-          ],
-        ));
-  }
-
   @override
   Widget build(BuildContext context) {
     List<Widget> texts = Repository.get().tables.map((table) {
-      return _table(table);
+      return TableGridItem(table, showStatus: true, onClicked: _onSelectTable);
     }).toList();
     Drawer drawer = _drawer(context);
 
