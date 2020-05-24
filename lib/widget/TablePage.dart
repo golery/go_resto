@@ -120,7 +120,13 @@ class _State extends State<TablePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             RaisedButton(
-              child: Text("New Order"),
+              child: Text(
+                "New Order",
+                style: TextStyle(color: Colors.white),
+              ),
+              color: Colors.lightGreen,
+              highlightColor: Colors.lightGreenAccent,
+              onPressed: _edit,
             ),
           ],
         )
