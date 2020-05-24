@@ -14,6 +14,8 @@ class TablePage extends StatefulWidget {
 }
 
 class _State extends State<TablePage> {
+  int status = 0;
+
   @override
   Widget build(BuildContext context) {
     var table = widget.table;
@@ -42,7 +44,33 @@ class _State extends State<TablePage> {
     if (order == null) return [];
     var children = order.items.map((item) {
       var dish = repo.getDish(item.dishId);
-      return ListTile(title: Text((dish?.name) ?? item.dishId));
+      String statusTxt;
+      if (this.status == 0) {
+        statusTxt = "Waiting";
+      } else if (this.status == 1) {
+        statusTxt = "Cooking";
+      } else if (this.status == 2) {
+        statusTxt = "Ready";
+      } else if (this.status == 3) {
+        statusTxt = "Served";
+      }
+      return ListTile(
+        title: Text((dish?.name) ?? item.dishId),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            RaisedButton(
+              child: Text(statusTxt),
+              onPressed: _changeStatus,
+            ),
+            SizedBox(width: 10),
+            RaisedButton(
+              child: Text("More"),
+              onPressed: _changeStatus,
+            ),
+          ],
+        ),
+      );
     }).toList();
     return [
       ListView(
@@ -50,6 +78,12 @@ class _State extends State<TablePage> {
         shrinkWrap: true,
       )
     ];
+  }
+
+  _changeStatus() {
+    setState(() {
+      ++status;
+    });
   }
 
   Widget _body() {
