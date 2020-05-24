@@ -8,9 +8,10 @@ part 'Model.g.dart';
 class RestoTable {
   String id = Uuid.v4();
   String name;
+  num maxPeople;
   String orderId;
 
-  RestoTable(this.name);
+  RestoTable(this.name, this.maxPeople);
 
   factory RestoTable.fromJson(Map<String, dynamic> json) =>
       _$RestoTableFromJson(json);
@@ -118,7 +119,11 @@ class Repository {
   num orderIdSeq = 1;
 
   void setSampleData() {
-    tables = [new RestoTable('A'), new RestoTable('B'), new RestoTable('C')];
+    tables = [
+      new RestoTable('01', 5),
+      new RestoTable('02', 4),
+      new RestoTable('03', 3)
+    ];
 
     dishCategories = [
       new DishCategory('Plates', [

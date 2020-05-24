@@ -26,7 +26,7 @@ class _ManageTablePageState extends State<ManageTablePage> {
   }
 
   void _onAdd() async {
-    RestoTable table = new RestoTable('Table');
+    RestoTable table = new RestoTable('Table', 1);
     var result = await Navigator.of(context)
         .push(new MaterialPageRoute(builder: (buildContext) {
       return new EditTablePage(table);

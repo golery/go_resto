@@ -9,6 +9,7 @@ part of 'Model.dart';
 RestoTable _$RestoTableFromJson(Map<String, dynamic> json) {
   return RestoTable(
     json['name'] as String,
+    json['maxPeople'] as num,
   )
     ..id = json['id'] as String
     ..orderId = json['orderId'] as String;
@@ -18,6 +19,7 @@ Map<String, dynamic> _$RestoTableToJson(RestoTable instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'maxPeople': instance.maxPeople,
       'orderId': instance.orderId,
     };
 
@@ -60,14 +62,55 @@ OrderItem _$OrderItemFromJson(Map<String, dynamic> json) {
     json['dishId'] as String,
   )
     ..quantity = json['quantity'] as num
-    ..notes = json['notes'] as String;
+    ..notes = json['notes'] as String
+    ..status = _$enumDecodeNullable(_$ItemStatusEnumMap, json['status']);
 }
 
 Map<String, dynamic> _$OrderItemToJson(OrderItem instance) => <String, dynamic>{
       'dishId': instance.dishId,
       'quantity': instance.quantity,
       'notes': instance.notes,
+      'status': _$ItemStatusEnumMap[instance.status],
     };
+
+T _$enumDecode<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    throw ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+
+  final value = enumValues.entries
+      .singleWhere((e) => e.value == source, orElse: () => null)
+      ?.key;
+
+  if (value == null && unknownValue == null) {
+    throw ArgumentError('`$source` is not one of the supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return value ?? unknownValue;
+}
+
+T _$enumDecodeNullable<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+}
+
+const _$ItemStatusEnumMap = {
+  ItemStatus.ORDER: 'ORDER',
+  ItemStatus.COOK: 'COOK',
+  ItemStatus.READY: 'READY',
+  ItemStatus.SERVED: 'SERVED',
+};
 
 Order _$OrderFromJson(Map<String, dynamic> json) {
   return Order(

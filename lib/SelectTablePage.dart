@@ -58,7 +58,7 @@ class SelectTablePageState extends State<SelectTablePage> {
           Column(
             children: <Widget>[
               Icon(Icons.people_outline),
-              Text("3 pp"),
+              Text("${table.maxPeople} pp"),
             ],
             crossAxisAlignment: CrossAxisAlignment.start,
           )
@@ -78,7 +78,7 @@ class SelectTablePageState extends State<SelectTablePage> {
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
+              color: Colors.black26.withOpacity(0.4),
               spreadRadius: 0,
               blurRadius: 8,
               offset: Offset(2, 2), // changes position of shadow
@@ -112,7 +112,7 @@ class SelectTablePageState extends State<SelectTablePage> {
             SizedBox(height: 20),
             Image.asset(
               "assets/picnic-table.png",
-              height: 40,
+              height: 60,
             ),
             list,
           ],
