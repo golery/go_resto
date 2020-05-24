@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:goresto/service/Navigator.dart';
 import 'package:goresto/widget/TablePage.dart';
@@ -7,8 +8,8 @@ import 'ManageMenuPage.dart';
 import 'ManageTablePage.dart';
 import 'Model.dart';
 import 'Persistent.dart';
-import 'Utils.dart';
 
+// Ref. https://www.behance.net/gallery/96449931/Anytime-Restaurant-App?tracking_source=search_projects_recommended%7Crestaurant%20order%20app
 class SelectTablePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -32,42 +33,85 @@ class SelectTablePageState extends State<SelectTablePage> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _table(RestoTable table) {
     var subtitleFreeStyle = const TextStyle(
         color: Colors.grey, fontSize: 10.0, fontStyle: FontStyle.italic);
     var subtitleServingStyle = const TextStyle(
         color: Colors.green, fontSize: 10.0, fontStyle: FontStyle.italic);
+    Order order = Repository.get().getCurrentOrder(table.id);
+    Widget subtitle;
+    if (order == null)
+      subtitle = new Text('Free', style: subtitleFreeStyle);
+    else
+      subtitle = new Text('Serving...', style: subtitleServingStyle);
+    var title = table.name;
+    if (order?.seqId != null) {
+      title += ': Order #${order.seqId}';
+    }
+    var inner = Column(children: <Widget>[
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+              child: Column(
+            children: <Widget>[
+              Icon(Icons.people_outline),
+              Text("3 pp"),
+            ],
+            crossAxisAlignment: CrossAxisAlignment.start,
+          )),
+          Text("${table.name}",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
+        ],
+      ),
+    ]);
+    return Container(
+        child: inner,
+        padding: EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 0,
+              blurRadius: 8,
+              offset: Offset(2, 2), // changes position of shadow
+            ),
+          ],
+        ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
     List<Widget> texts = Repository.get().tables.map((table) {
-      Order order = Repository.get().getCurrentOrder(table.id);
-      Widget subtitle;
-      if (order == null)
-        subtitle = new Text('Free', style: subtitleFreeStyle);
-      else
-        subtitle = new Text('Serving...', style: subtitleServingStyle);
-      var title = table.name;
-      if (order?.seqId != null) {
-        title += ': Order #${order.seqId}';
-      }
-      return new ListTile(
-          title: new Text(title),
-          subtitle: subtitle,
-          leading: new Icon(Icons.receipt, color: Colors.blue),
-          onTap: () {
-            _onSelectTable(table);
-          });
+      return _table(table);
     }).toList();
     Drawer drawer = _drawer(context);
 
-    ListView list = new ListView(children: texts);
+    GridView list = GridView.count(
+        primary: false,
+        padding: const EdgeInsets.all(20),
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 5,
+        crossAxisCount: 3,
+        shrinkWrap: true,
+        children: texts);
     return new Scaffold(
         drawer: drawer,
         appBar: new AppBar(
           title: new Text('Choose table'),
         ),
-        body: new Column(children: <Widget>[
-          new Expanded(child: Layout.pad(list)),
-        ]));
+        body: ListView(
+          children: <Widget>[
+            SizedBox(height: 20),
+            Image.asset(
+              "assets/picnic-table.png",
+              height: 40,
+            ),
+            list,
+          ],
+        ));
   }
 
   Drawer _drawer(BuildContext context) {
