@@ -150,7 +150,7 @@ class _State extends State<TablePage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("Table ${widget.table.name} is empty",
+            Text("Table ${widget.table.name} is free",
                 style: TextStyle(fontSize: 20)),
           ],
         ),
@@ -160,7 +160,41 @@ class _State extends State<TablePage> {
           children: <Widget>[
             RaisedButton(
               child: Text(
-                "New Order",
+                "Open Table",
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: _openTable,
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget _startOrder() {
+    return ListView(
+      children: <Widget>[
+        SizedBox(height: 20),
+        Image.asset(
+          'assets/fishes.jpg',
+          height: 150.0,
+          fit: BoxFit.fitHeight,
+        ),
+        SizedBox(height: 50),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text("Currently, there is no order",
+                style: TextStyle(fontSize: 20)),
+          ],
+        ),
+        SizedBox(height: 30),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            RaisedButton(
+              child: Text(
+                "Create New Order",
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: _edit,
@@ -173,7 +207,11 @@ class _State extends State<TablePage> {
 
   Widget _body(Order order) {
     if (order == null) {
+      // Just welcome customer, no order yet
       return _emptyTable();
+    }
+    if (order.items.isEmpty) {
+      return _startOrder();
     }
     return Column(
       children: <Widget>[
@@ -181,6 +219,17 @@ class _State extends State<TablePage> {
         ..._list(),
       ],
     );
+  }
+
+  _openTable() async {
+    var table = widget.table;
+    var order = Repository.get().getCurrentOrder(table.id);
+    if (order != null && order.items.isNotEmpty) {
+      return;
+    }
+    order = new Order(table.id);
+    Repository.get().setCurrentOrder(table.id, order);
+    setState(() {});
   }
 
   _edit() async {

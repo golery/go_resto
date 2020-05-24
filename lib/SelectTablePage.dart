@@ -30,8 +30,8 @@ class SelectTablePageState extends State<SelectTablePage> {
       result.seqId = Repository.get().orderIdSeq++;
       Repository.get().setCurrentOrder(table.id, result);
       Persistent.save();
-      setState(() {});
     }
+    setState(() {});
   }
 
   @override
