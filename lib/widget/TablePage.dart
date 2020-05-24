@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:goresto/Model.dart';
 import 'package:goresto/service/Navigator.dart';
@@ -38,36 +39,35 @@ class _State extends State<TablePage> {
     );
   }
 
+  String _statusText(ItemStatus status) {
+    if (status == ItemStatus.COOK) {
+      return "Cooking";
+    }
+    if (status == ItemStatus.READY) {
+      return "Ready";
+    }
+    if (status == ItemStatus.SERVED) {
+      return "Served";
+    }
+    return "Ordering";
+  }
+
   List<Widget> _list() {
     var repo = Repository.get();
     var order = repo.getCurrentOrder(widget.table.id);
     if (order == null) return [];
     var children = order.items.map((item) {
       var dish = repo.getDish(item.dishId);
-      String statusTxt;
-      if (this.status == 0) {
-        statusTxt = "Waiting";
-      } else if (this.status == 1) {
-        statusTxt = "Cooking";
-      } else if (this.status == 2) {
-        statusTxt = "Ready";
-      } else if (this.status == 3) {
-        statusTxt = "Served";
-      }
+
       return ListTile(
         title: Text((dish?.name) ?? item.dishId),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             RaisedButton(
-              child: Text(statusTxt),
-              onPressed: _changeStatus,
-            ),
-            SizedBox(width: 10),
-            RaisedButton(
-              child: Text("More"),
-              onPressed: _changeStatus,
-            ),
+              child: Text(_statusText(item.status)),
+              onPressed: () => _changeStatus(item),
+            )
           ],
         ),
       );
@@ -80,13 +80,58 @@ class _State extends State<TablePage> {
     ];
   }
 
-  _changeStatus() {
+  _changeStatus(OrderItem item) {
+    var next = item.status;
+    if (next == ItemStatus.ORDER) {
+      next = ItemStatus.COOK;
+    } else if (next == ItemStatus.COOK) {
+      next = ItemStatus.READY;
+    } else if (next == ItemStatus.READY) {
+      next = ItemStatus.SERVED;
+    } else if (next == ItemStatus.SERVED) {
+      next = ItemStatus.ORDER;
+    }
     setState(() {
-      ++status;
+      item.status = next;
     });
   }
 
+  bool _empty = true;
+
+  Widget _emptyTable() {
+    return ListView(
+      children: <Widget>[
+        SizedBox(height: 20),
+        Image.asset(
+          'assets/fishes.jpg',
+          height: 200.0,
+          fit: BoxFit.fitHeight,
+        ),
+        SizedBox(height: 50),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text("Table ${widget.table.name} is empty",
+                style: TextStyle(fontSize: 20)),
+          ],
+        ),
+        SizedBox(height: 30),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            RaisedButton(
+              child: Text("New Order"),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
   Widget _body() {
+    if (_empty) {
+      return _emptyTable();
+    }
     return Column(
       children: <Widget>[
         SizedBox(height: 20),

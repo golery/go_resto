@@ -47,11 +47,14 @@ class Dish {
   Map<String, dynamic> toJson() => _$DishToJson(this);
 }
 
+enum ItemStatus { ORDER, COOK, READY, SERVED }
+
 @JsonSerializable()
 class OrderItem {
   String dishId;
   num quantity = 0;
   String notes;
+  ItemStatus status = ItemStatus.ORDER;
 
   OrderItem(this.dishId);
 
