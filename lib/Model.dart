@@ -120,25 +120,38 @@ class Repository {
 
   void setSampleData() {
     tables = [
-      new RestoTable('01', 5),
+      new RestoTable('01', 4),
       new RestoTable('02', 4),
-      new RestoTable('03', 3)
+      new RestoTable('03', 2)
     ];
 
+    var dish1 = new Dish('Brisket Plate', 20);
+    var dish2 = new Dish('Slice of Homemade Pecan Pie', 5);
     dishCategories = [
       new DishCategory('Plates', [
-        new Dish('Brisket Plate', 9.5),
-        new Dish('Pork Ribs Plate', 10.9),
-        new Dish('Sausage Plate', 5.2),
-        new Dish('Turkey Plate', 3.4),
-        new Dish('1/2 Of A Whole Chicken Plate', 4.5),
+        dish1,
+        new Dish('Pork Ribs Plate', 19),
+        new Dish('Sausage Plate', 25),
+        new Dish('Turkey Plate', 18),
+        new Dish('1/2 Of A Whole Chicken Plate', 22),
       ]),
       new DishCategory('Desserts', [
-        new Dish('Slice of Homemade Pecan Pie', 10.9),
-        new Dish('Slice of Chocolate Pecan Pie', 8.9),
-        new Dish('Blackberry or Peach Cobbler ', 9.2),
+        dish2,
+        new Dish('Slice of Chocolate Pecan Pie', 6),
+        new Dish('Blackberry or Peach Cobbler ', 5.5),
       ])
     ];
+
+    var tableId = tables[0].id;
+    Order order = Order(tableId);
+    OrderItem item1 = new OrderItem(dish1.id);
+    item1.quantity = 1;
+    item1.status = ItemStatus.ORDER;
+    OrderItem item2 = new OrderItem(dish2.id);
+    item2.quantity = 1;
+    item2.status = ItemStatus.READY;
+    order.items = [item1, item2];
+    currentOrders[tableId] = order;
   }
 
   Order getCurrentOrder(String tableId) {

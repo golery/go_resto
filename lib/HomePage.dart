@@ -42,27 +42,24 @@ class _State extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     TextStyle styleLogo = TextStyle(
-        fontSize: 40.0, color: Colors.blue, fontWeight: FontWeight.bold);
+        fontSize: 40.0, fontWeight: FontWeight.bold, color: Colors.green);
     TextStyle styleButton = TextStyle(color: Colors.white);
     var loginButton = RaisedButton(
         child: Text('LOGIN', style: styleButton),
-        color: Colors.blue,
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
             return ManageTablePage();
           }));
         });
     var demoButton = RaisedButton(
-        child: Text('START', style: styleButton),
-        color: Colors.blue,
-        onPressed: _onStart);
+        child: Text('START', style: styleButton), onPressed: _onStart);
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Padding(
             child: Image.asset(
-              'assets/landing.jpg',
+              'assets/foodcourt.jpg',
               height: 240.0,
               fit: BoxFit.cover,
             ),
