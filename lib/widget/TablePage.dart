@@ -32,6 +32,7 @@ class _State extends State<TablePage> {
         actions: <Widget>[],
       ),
       body: _body(order),
+      bottomNavigationBar: _footer(),
 //      floatingActionButton: FloatingActionButton(
 //        onPressed: _ok,
 //        child: Icon(Icons.check),
@@ -96,15 +97,13 @@ class _State extends State<TablePage> {
     });
   }
 
-  bool _empty = true;
-
   Widget _emptyTable() {
     return ListView(
       children: <Widget>[
         SizedBox(height: 20),
         Image.asset(
           'assets/fishes.jpg',
-          height: 200.0,
+          height: 150.0,
           fit: BoxFit.fitHeight,
         ),
         SizedBox(height: 50),
@@ -124,8 +123,6 @@ class _State extends State<TablePage> {
                 "New Order",
                 style: TextStyle(color: Colors.white),
               ),
-              color: Colors.lightGreen,
-              highlightColor: Colors.lightGreenAccent,
               onPressed: _edit,
             ),
           ],
@@ -141,23 +138,6 @@ class _State extends State<TablePage> {
     return Column(
       children: <Widget>[
         SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            RaisedButton(
-              child: Text('EDIT'),
-              onPressed: _edit,
-            ),
-            RaisedButton(
-              child: Text('BILL'),
-              onPressed: _bill,
-            ),
-            RaisedButton(
-              child: Text('CLOSE'),
-              onPressed: _close,
-            ),
-          ],
-        ),
         ..._list(),
       ],
     );
@@ -190,5 +170,34 @@ class _State extends State<TablePage> {
     var table = widget.table;
     Repository.get().closeTable(table.id);
     setState(() {});
+  }
+
+  _footerButton(String text, IconData icon, VoidCallback callback) {
+    return Expanded(
+      child: FlatButton(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            SizedBox(height: 5),
+            Icon(icon),
+            SizedBox(height: 5),
+            Text(text),
+            SizedBox(height: 5),
+          ],
+        ),
+        onPressed: callback,
+      ),
+    );
+  }
+
+  _footer() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        _footerButton("Edit", Icons.edit, _edit),
+        _footerButton("Bill", Icons.attach_money, _bill),
+        _footerButton("Close", Icons.close, _close),
+      ],
+    );
   }
 }

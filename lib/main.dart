@@ -15,6 +15,12 @@ class Application extends StatelessWidget {
         title: 'Resto Waiter',
         theme: new ThemeData(
           primarySwatch: Colors.green,
+          scaffoldBackgroundColor: Colors.white,
+          buttonTheme: ButtonThemeData(
+            buttonColor: Colors.green, //  <-- dark color
+            textTheme: ButtonTextTheme
+                .primary, //  <-- this auto selects the right color
+          ),
         ),
         debugShowCheckedModeBanner: false,
         navigatorObservers: [

@@ -71,7 +71,7 @@ class SelectTablePageState extends State<SelectTablePage> {
       ),
     ]);
     return Container(
-        child: inner,
+        child: InkWell(child: inner, onTap: () => _onSelectTable(table)),
         padding: EdgeInsets.all(15),
         decoration: BoxDecoration(
           color: Colors.white,
