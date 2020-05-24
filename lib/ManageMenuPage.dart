@@ -39,7 +39,8 @@ class _ManageMenuPageState extends State<ManageMenuPage> {
         .dishCategories
         .map((category) => new ListTile(
               title: new Text(category.name),
-              leading: new Icon(Icons.restaurant, color: Colors.blue),
+              leading: new Icon(Icons.restaurant,
+                  color: Theme.of(context).primaryColor),
               onTap: () {
                 _onSelectCategory(category);
               },

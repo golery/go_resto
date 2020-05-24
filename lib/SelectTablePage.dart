@@ -133,34 +133,35 @@ class SelectTablePageState extends State<SelectTablePage> {
 
   Drawer _drawer(BuildContext context) {
     var drawer = new Drawer(
-        child: new ListView(
-      padding: EdgeInsets.zero,
-      children: <Widget>[
-        new DrawerHeader(
-          child: new Text('ORDER',
-              style: new TextStyle(
-                  color: Colors.white,
-                  fontSize: 35.0,
-                  fontWeight: FontWeight.bold)),
-          decoration: new BoxDecoration(
-            color: Colors.blue,
+      child: new ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          new DrawerHeader(
+            child: new Text('Restaurant',
+                style: new TextStyle(
+                    color: Colors.white,
+                    fontSize: 35.0,
+                    fontWeight: FontWeight.bold)),
+            decoration: new BoxDecoration(
+              color: Theme.of(context).primaryColor,
+            ),
           ),
-        ),
-        new ListTile(
-          title: new Text('Manage tables'),
-          onTap: _manageTable,
-        ),
-        new ListTile(
-          title: new Text('Manage menu'),
-          onTap: _manageMenu,
-        ),
-        new ListTile(
-          title: new Text('About'),
-          onTap: () => Navigate.push(
-              context, Screen.AboutPage, (context) => AboutPage()),
-        )
-      ],
-    ));
+          new ListTile(
+            title: new Text('Manage tables'),
+            onTap: _manageTable,
+          ),
+          new ListTile(
+            title: new Text('Manage menu'),
+            onTap: _manageMenu,
+          ),
+          new ListTile(
+            title: new Text('About'),
+            onTap: () => Navigate.push(
+                context, Screen.AboutPage, (context) => AboutPage()),
+          )
+        ],
+      ),
+    );
     return drawer;
   }
 }
