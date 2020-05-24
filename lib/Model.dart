@@ -149,4 +149,8 @@ class Repository {
         .map((cat) => cat.dishes.firstWhere((dish) => dish.id == dishId))
         .firstWhere((dish) => dish != null, orElse: null);
   }
+
+  void closeTable(String tableId) {
+    currentOrders[tableId] = null;
+  }
 }

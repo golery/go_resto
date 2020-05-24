@@ -31,7 +31,7 @@ class _State extends State<TablePage> {
         title: Text("Table ${table.name}"),
         actions: <Widget>[],
       ),
-      body: _body(),
+      body: _body(order),
 //      floatingActionButton: FloatingActionButton(
 //        onPressed: _ok,
 //        child: Icon(Icons.check),
@@ -134,8 +134,8 @@ class _State extends State<TablePage> {
     );
   }
 
-  Widget _body() {
-    if (_empty) {
+  Widget _body(Order order) {
+    if (order == null) {
       return _emptyTable();
     }
     return Column(
@@ -154,6 +154,7 @@ class _State extends State<TablePage> {
             ),
             RaisedButton(
               child: Text('CLOSE'),
+              onPressed: _close,
             ),
           ],
         ),
@@ -170,7 +171,10 @@ class _State extends State<TablePage> {
     }
     order = await Navigate.push(
         context, Screen.EditOrderItemPage, (context) => TableOrderPage(order));
-    Repository.get().setCurrentOrder(table.id, order);
+    if (order != null) {
+      Repository.get().setCurrentOrder(table.id, order);
+      setState(() {});
+    }
   }
 
   _bill() {
@@ -181,4 +185,10 @@ class _State extends State<TablePage> {
   }
 
   _ok() {}
+
+  void _close() {
+    var table = widget.table;
+    Repository.get().closeTable(table.id);
+    setState(() {});
+  }
 }
