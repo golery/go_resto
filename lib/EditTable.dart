@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'Model.dart';
-import 'Utils.dart';
 import 'Persistent.dart';
+import 'Utils.dart';
 
 class EditTablePage extends StatefulWidget {
   final RestoTable table;
@@ -15,19 +17,28 @@ class EditTablePage extends StatefulWidget {
 }
 
 class EditTableState extends State<EditTablePage> {
-  final TextEditingController textController = new TextEditingController();
+  final TextEditingController nameController = new TextEditingController();
+  final TextEditingController maxPeopleController = new TextEditingController();
   final RestoTable table;
 
   EditTableState(this.table);
 
+  @override
+  void initState() {
+    super.initState();
+    nameController.text = table.name;
+    maxPeopleController.text = "${table.maxPeople}";
+  }
+
   void _onAddTable() {
-    table.name = textController.text;
+    table.name = nameController.text;
+    table.maxPeople = int.parse(maxPeopleController.text);
     Navigator.of(context).pop(table);
   }
 
   @override
   void dispose() {
-    textController.dispose();
+    nameController.dispose();
     Persistent.save();
     super.dispose();
   }
@@ -38,20 +49,27 @@ class EditTableState extends State<EditTablePage> {
 
   @override
   Widget build(BuildContext context) {
-    textController.text = table.name;
     var form = new Form(
-            child: new Column(children: <Widget>[
+      child: new Column(
+        children: <Widget>[
           new TextFormField(
-              decoration: new InputDecoration(labelText: 'Table name'),
-              controller: textController),
+            decoration: new InputDecoration(labelText: 'Table name'),
+            controller: nameController,
+          ),
+          new TextFormField(
+            decoration: new InputDecoration(labelText: 'Max people'),
+            keyboardType: TextInputType.number,
+            controller: maxPeopleController,
+          ),
           Layout.pad(
-              new RaisedButton(onPressed: _onAddTable, child: new Text('OK')))
-        ]));
+              new RaisedButton(onPressed: _onAddTable, child: new Text('OK'))),
+        ],
+      ),
+    );
     return new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Add table'),
-          actions: [new IconButton(icon: new Icon(Icons.delete), onPressed: _onDelete)]
-        ),
+        appBar: new AppBar(title: new Text('Add table'), actions: [
+          new IconButton(icon: new Icon(Icons.delete), onPressed: _onDelete)
+        ]),
         body: Layout.pad(form));
   }
 }

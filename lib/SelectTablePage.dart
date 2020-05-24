@@ -119,6 +119,18 @@ class SelectTablePageState extends State<SelectTablePage> {
         ));
   }
 
+  _manageTable() async {
+    await Navigate.push(
+        context, Screen.ManageTablePage, (context) => ManageTablePage());
+    setState(() {});
+  }
+
+  _manageMenu() async {
+    await Navigate.push(
+        context, Screen.ManageMenuPage, (context) => ManageMenuPage());
+    setState(() {});
+  }
+
   Drawer _drawer(BuildContext context) {
     var drawer = new Drawer(
         child: new ListView(
@@ -136,13 +148,11 @@ class SelectTablePageState extends State<SelectTablePage> {
         ),
         new ListTile(
           title: new Text('Manage tables'),
-          onTap: () => Navigate.push(
-              context, Screen.ManageTablePage, (context) => ManageTablePage()),
+          onTap: _manageTable,
         ),
         new ListTile(
           title: new Text('Manage menu'),
-          onTap: () => Navigate.push(
-              context, Screen.ManageMenuPage, (context) => ManageMenuPage()),
+          onTap: _manageMenu,
         ),
         new ListTile(
           title: new Text('About'),
