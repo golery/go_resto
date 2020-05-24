@@ -258,6 +258,7 @@ class _State extends State<TablePage> {
   void _close() {
     var table = widget.table;
     Repository.get().closeTable(table.id);
+    Persistent.save();
     setState(() {});
   }
 
@@ -285,7 +286,7 @@ class _State extends State<TablePage> {
       children: <Widget>[
         _footerButton("Edit", Icons.edit, _edit),
         _footerButton("Bill", Icons.attach_money, _bill),
-        _footerButton("Close", Icons.close, _close),
+        _footerButton("Clear", Icons.close, _close),
       ],
     );
   }
