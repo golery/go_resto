@@ -40,11 +40,11 @@ class _State extends State<TableOrderReviewPage> {
     );
   }
 
-  num _getQuantity(String dishId) {
+  num _getQuantity(String dishId, List<OrderItem> items) {
     return items
         .where((item) => item.dishId == dishId)
         .map((e) => e.quantity)
-        .reduce((a, b) => a + b);
+        .length;
   }
 
   @override
@@ -53,9 +53,10 @@ class _State extends State<TableOrderReviewPage> {
     bool newOrder = order.items.isEmpty;
     Repository.get().dishCategories.forEach((category) {
       category.dishes.forEach((dish) {
-        var oldQuantity = order.findItemByDishId(dish.id)?.quantity;
-        var newQuantity = _getQuantity(dish.id);
-        if (newQuantity == null && oldQuantity == null) return;
+        var dishId = dish.id;
+        var oldQuantity = _getQuantity(dishId, order.items);
+        var newQuantity = _getQuantity(dishId, widget.items);
+        if (newQuantity == oldQuantity) return;
 
         Widget trailing;
         if (newOrder) {

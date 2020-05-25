@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:goresto/Model.dart';
+import 'package:goresto/service/Factory.dart';
 
 class EditOrderItemPage extends StatefulWidget {
   List<OrderItem> items;
@@ -69,6 +70,7 @@ class _State extends State<EditOrderItemPage> {
   }
 
   _remove(OrderItem item) {
+    factory.analytics.logEvent(name: "evRemoveItem");
     setState(() {
       widget.items.remove(item);
     });
