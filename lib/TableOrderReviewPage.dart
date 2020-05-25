@@ -5,7 +5,7 @@ import 'Utils.dart';
 
 class TableOrderReviewPage extends StatefulWidget {
   final Order order;
-  final Map<String, OrderItem> items;
+  final List<OrderItem> items;
 
   TableOrderReviewPage(this.order, this.items);
 
@@ -17,7 +17,7 @@ class TableOrderReviewPage extends StatefulWidget {
 
 class _State extends State<TableOrderReviewPage> {
   final Order order;
-  final Map<String, OrderItem> items;
+  final List<OrderItem> items;
 
   _State(this.order, this.items);
 
@@ -40,6 +40,13 @@ class _State extends State<TableOrderReviewPage> {
     );
   }
 
+  num _getQuantity(String dishId) {
+    return items
+        .where((item) => item.dishId == dishId)
+        .map((e) => e.quantity)
+        .reduce((a, b) => a + b);
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> children = [];
@@ -47,8 +54,7 @@ class _State extends State<TableOrderReviewPage> {
     Repository.get().dishCategories.forEach((category) {
       category.dishes.forEach((dish) {
         var oldQuantity = order.findItemByDishId(dish.id)?.quantity;
-        var newItem = items[dish.id];
-        var newQuantity = newItem?.quantity;
+        var newQuantity = _getQuantity(dish.id);
         if (newQuantity == null && oldQuantity == null) return;
 
         Widget trailing;
@@ -61,11 +67,8 @@ class _State extends State<TableOrderReviewPage> {
         } else {
           trailing = _formatQuantity(oldQuantity, newQuantity);
         }
-        String notes = newItem?.notes;
-        children.add(new ListTile(
-            title: new Text(dish.name),
-            subtitle: notes == null ? null : Text(notes),
-            trailing: trailing));
+        children
+            .add(new ListTile(title: new Text(dish.name), trailing: trailing));
       });
     });
     return new Scaffold(

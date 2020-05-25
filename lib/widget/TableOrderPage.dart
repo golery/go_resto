@@ -22,26 +22,23 @@ class TableOrderPage extends StatefulWidget {
 
 class _State extends State<TableOrderPage> {
   final Order order;
-  final Map<String, OrderItem> items = {};
+  List<OrderItem> items;
 
   _State(this.order) {
     if (order.items == null) order.items = [];
-    this
+    items = this
         .order
         .items
-        .forEach((item) => items[item.dishId] = OrderItem.from(item));
+        .map((item) => OrderItem.from(item))
+        .toList(growable: true);
   }
 
   void onTapDish(Dish dish) {
-    var item = items[dish.id];
-    if (item == null) {
-      item = OrderItem(dish.id);
-      items[dish.id] = item;
-    }
-    ++item.quantity;
-    factory.analytics.logEvent(
-        name: "evTapDish",
-        parameters: {'evDish': dish.name, 'evQuantity': "${item.quantity}"});
+    var item = OrderItem(dish.id);
+    item.quantity = 1;
+    items.add(item);
+    factory.analytics
+        .logEvent(name: "evTapDish", parameters: {'evDish': dish.name});
     setState(() {});
   }
 
@@ -49,7 +46,7 @@ class _State extends State<TableOrderPage> {
     bool confirm = await Navigate.push(context, Screen.TableOrderReviewPage,
         (context) => TableOrderReviewPage(order, items));
     if (confirm != null && confirm) {
-      order.items = items.values.toList();
+      order.items = items;
       Persistent.save();
       Navigator.of(context).pop(order);
     }
@@ -62,7 +59,7 @@ class _State extends State<TableOrderPage> {
   }
 
   bool hasItem() {
-    return items.values.any((item) => item.quantity > 0);
+    return items.isNotEmpty;
   }
 
   @override
@@ -98,16 +95,27 @@ class _State extends State<TableOrderPage> {
         ]));
   }
 
-  void _editItem(String dishId) {
-    OrderItem item = items[dishId];
-    Navigate.push(context, Screen.EditOrderItemPage,
-        (context) => EditOrderItemPage(item));
+  num _getQuantity(String dishId) {
+    return items
+        .where((item) => item.dishId == dishId)
+        .map((e) => e.quantity)
+        .reduce((a, b) => a + b);
+  }
+
+  void _editItem(String dishId) async {
+    List<OrderItem> toEdit =
+        items.where((item) => item.dishId == dishId).toList();
+    await Navigate.push(context, Screen.EditOrderItemPage,
+        (context) => EditOrderItemPage(dishId, toEdit));
+
+    items.removeWhere((item) => item.dishId == dishId);
+    items.addAll(toEdit);
+    setState(() {});
   }
 
   ListTile _listTitle(dish) {
-    OrderItem item = items[dish.id];
-    String notes = item?.notes;
-    num quantity = item?.quantity ?? 0;
+    var dishItems = items.where((item) => item.dishId == dish.id).toList();
+    num quantity = dishItems.length;
     quantity = quantity == 0 ? null : quantity;
     var leading = SizedBox(
       width: 30,
@@ -130,7 +138,6 @@ class _State extends State<TableOrderPage> {
             label: Text("Edit"));
     return ListTile(
       title: Text(dish.name),
-      subtitle: notes == null ? null : Text(notes),
       leading: leading,
       trailing: trailing,
       onTap: () => onTapDish(dish),

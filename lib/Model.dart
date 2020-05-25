@@ -52,6 +52,7 @@ enum ItemStatus { ORDER, COOK, READY, SERVED }
 
 @JsonSerializable()
 class OrderItem {
+  String id = Uuid.v4();
   String dishId;
   num quantity = 0;
   String notes;
@@ -60,9 +61,11 @@ class OrderItem {
   OrderItem(this.dishId);
 
   OrderItem.from(OrderItem other) {
+    id = other.id;
     dishId = other.dishId;
     quantity = other.quantity;
     notes = other.notes;
+    status = other.status;
   }
 
   factory OrderItem.fromJson(Map<String, dynamic> json) =>
