@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:goresto/Model.dart';
+import 'package:goresto/service/Factory.dart';
 
 typedef OnClickTableGridItem = void Function(RestoTable table);
 
@@ -77,6 +78,7 @@ class _State extends State<TableGridItem> {
 
   _onSelectTable(RestoTable table) {
     if (widget.onClicked == null) return;
+    factory.analytics.logEvent(name: "evSelectTable");
     widget.onClicked(table);
   }
 }

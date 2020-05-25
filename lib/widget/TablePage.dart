@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:goresto/Model.dart';
 import 'package:goresto/Persistent.dart';
+import 'package:goresto/service/Factory.dart';
 import 'package:goresto/service/Navigator.dart';
 import 'package:goresto/widget/BillPage.dart';
 import 'package:goresto/widget/TableOrderPage.dart';
@@ -106,7 +107,7 @@ class _State extends State<TablePage> {
                       ),
                     ],
                   )),
-              onPressed: () => _changeStatus(item),
+              onPressed: () => _changeStatus(dish, item),
             )
           ],
         ),
@@ -120,7 +121,7 @@ class _State extends State<TablePage> {
     ];
   }
 
-  _changeStatus(OrderItem item) {
+  _changeStatus(Dish dish, OrderItem item) {
     var next = item.status;
     if (next == ItemStatus.ORDER) {
       next = ItemStatus.COOK;
@@ -134,6 +135,9 @@ class _State extends State<TablePage> {
     setState(() {
       item.status = next;
     });
+    factory.analytics.logEvent(
+        name: "evItemStatus",
+        parameters: {'evDish': '${dish.name}', 'evStatus': '${next}'});
     Persistent.save();
   }
 
@@ -222,6 +226,7 @@ class _State extends State<TablePage> {
   }
 
   _openTable() async {
+    factory.analytics.logEvent(name: "eventOpenTable");
     var table = widget.table;
     var order = Repository.get().getCurrentOrder(table.id);
     if (order != null && order.items.isNotEmpty) {
@@ -233,6 +238,7 @@ class _State extends State<TablePage> {
   }
 
   _edit() async {
+    factory.analytics.logEvent(name: "eventEdit");
     var table = widget.table;
     var order = Repository.get().getCurrentOrder(table.id);
     if (order == null) {
@@ -247,15 +253,15 @@ class _State extends State<TablePage> {
   }
 
   _bill() {
+    factory.analytics.logEvent(name: "evBill");
     var table = widget.table;
     var order = Repository.get().getCurrentOrder(table.id);
     if (order == null) return;
     Navigate.push(context, Screen.BillPage, (context) => BillPage(order));
   }
 
-  _ok() {}
-
-  void _close() {
+  void _clear() {
+    factory.analytics.logEvent(name: "evClear");
     var table = widget.table;
     Repository.get().closeTable(table.id);
     Persistent.save();
@@ -286,7 +292,7 @@ class _State extends State<TablePage> {
       children: <Widget>[
         _footerButton("Edit", Icons.edit, _edit),
         _footerButton("Bill", Icons.attach_money, _bill),
-        _footerButton("Clear", Icons.close, _close),
+        _footerButton("Clear", Icons.close, _clear),
       ],
     );
   }

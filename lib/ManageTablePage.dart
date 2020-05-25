@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:goresto/service/Factory.dart';
 import 'package:goresto/service/Navigator.dart';
 import 'package:goresto/widget/TableGridItem.dart';
 
@@ -28,6 +29,7 @@ class _ManageTablePageState extends State<ManageTablePage> {
   }
 
   void _onAdd() async {
+    factory.analytics.logEvent(name: "evAddTable");
     RestoTable table = new RestoTable('Table', 1);
     var result = await Navigator.of(context)
         .push(new MaterialPageRoute(builder: (buildContext) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:goresto/Constants.dart';
+import 'package:goresto/service/Factory.dart';
 import 'package:goresto/service/Navigator.dart';
 import 'package:goresto/widget/EditOrderItemPage.dart';
 
@@ -32,14 +33,16 @@ class _State extends State<TableOrderPage> {
   }
 
   void onTapDish(Dish dish) {
-    setState(() {
-      var item = items[dish.id];
-      if (item == null) {
-        item = OrderItem(dish.id);
-        items[dish.id] = item;
-      }
-      ++item.quantity;
-    });
+    var item = items[dish.id];
+    if (item == null) {
+      item = OrderItem(dish.id);
+      items[dish.id] = item;
+    }
+    ++item.quantity;
+    factory.analytics.logEvent(
+        name: "evTapDish",
+        parameters: {'evDish': dish.name, 'evQuantity': "${item.quantity}"});
+    setState(() {});
   }
 
   void _onReview() async {

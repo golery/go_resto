@@ -1,14 +1,12 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
+import 'package:goresto/service/Factory.dart';
 
 import 'HomePage.dart';
 
 void main() => runApp(new Application());
 
 class Application extends StatelessWidget {
-  FirebaseAnalytics analytics = FirebaseAnalytics();
-
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -24,7 +22,7 @@ class Application extends StatelessWidget {
         ),
         debugShowCheckedModeBanner: false,
         navigatorObservers: [
-          FirebaseAnalyticsObserver(analytics: analytics),
+          FirebaseAnalyticsObserver(analytics: factory.analytics),
         ],
         home: new HomePage());
   }

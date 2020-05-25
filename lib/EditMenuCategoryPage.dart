@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:goresto/service/Factory.dart';
 import 'package:goresto/service/Navigator.dart';
 
 import 'EditDishPage.dart';
@@ -40,6 +41,7 @@ class _EditMenuCategoryState extends State<EditMenuCategoryPage> {
   }
 
   void _onEditDish(DishCategory category, Dish dish) async {
+    factory.analytics.logEvent(name: "evEditDish");
     var result = await Navigate.push(
         context, Screen.EditDishPage, (context) => EditDishPage(dish));
     if (result == 'delete') {
@@ -49,6 +51,7 @@ class _EditMenuCategoryState extends State<EditMenuCategoryPage> {
   }
 
   void _onAddDish() async {
+    factory.analytics.logEvent(name: "eventAddDish");
     var dish = new Dish('Dish name', 0.0);
     var result = await Navigate.push(
         context, Screen.EditDishPage, (context) => EditDishPage(dish));
