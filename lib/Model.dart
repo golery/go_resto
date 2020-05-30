@@ -5,6 +5,12 @@ import 'Utils.dart';
 part 'Model.g.dart';
 
 @JsonSerializable()
+class Settings {
+  num taxPercentage = 10;
+  num tipPercentage = 10;
+}
+
+@JsonSerializable()
 class RestoTable {
   String id = Uuid.v4();
   String name;
@@ -96,10 +102,13 @@ class Order {
 /// This object is written to file
 @JsonSerializable()
 class Persistence {
+  static const num CURRENT_FORMAT_VERSION = 1;
+  num formatVersion = CURRENT_FORMAT_VERSION;
   List<RestoTable> tables;
   List<DishCategory> categories;
   List<Order> orders;
   num orderIdSeq;
+  Settings settings;
 
   Persistence();
 
@@ -120,6 +129,7 @@ class Repository {
   List<DishCategory> dishCategories;
   Map<String, Order> currentOrders = {};
   num orderIdSeq = 1;
+  Settings settings;
 
   void setSampleData() {
     tables = [
@@ -155,6 +165,8 @@ class Repository {
     item2.status = ItemStatus.READY;
     order.items = [item1, item2];
     currentOrders[tableId] = order;
+
+    settings = new Settings();
   }
 
   Order getCurrentOrder(String tableId) {

@@ -11,7 +11,8 @@ enum Screen {
   EditDishPage,
   EditMenuCategoryPage,
   EditTablePage,
-  BillPage
+  BillPage,
+  BillSettings,
 }
 
 class Navigate {
@@ -22,5 +23,9 @@ class Navigate {
       // For firebase analytics to track screen name
       settings: RouteSettings(name: name.toString()),
     ));
+  }
+
+  static void pop(BuildContext context, Object result) {
+    Navigator.pop(context, result);
   }
 }

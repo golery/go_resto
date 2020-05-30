@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:goresto/service/Factory.dart';
 import 'package:goresto/service/Navigator.dart';
+import 'package:goresto/widget/BillSettingsPage.dart';
 import 'package:goresto/widget/TableGridItem.dart';
 import 'package:goresto/widget/TablePage.dart';
 
@@ -67,14 +69,23 @@ class SelectTablePageState extends State<SelectTablePage> {
   }
 
   _manageTable() async {
+    factory.analytics.logEvent(name: "evManageTable");
     await Navigate.push(
         context, Screen.ManageTablePage, (context) => ManageTablePage());
     setState(() {});
   }
 
   _manageMenu() async {
+    factory.analytics.logEvent(name: "evManageMenu");
     await Navigate.push(
         context, Screen.ManageMenuPage, (context) => ManageMenuPage());
+    setState(() {});
+  }
+
+  _billSettings() async {
+    factory.analytics.logEvent(name: "evBillSettings");
+    await Navigate.push(
+        context, Screen.BillSettings, (context) => BillSettingsPage());
     setState(() {});
   }
 
@@ -100,6 +111,10 @@ class SelectTablePageState extends State<SelectTablePage> {
           new ListTile(
             title: new Text('Manage menu'),
             onTap: _manageMenu,
+          ),
+          new ListTile(
+            title: new Text('Bill settings'),
+            onTap: _billSettings,
           ),
           new ListTile(
             title: new Text('About'),

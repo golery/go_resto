@@ -32,6 +32,8 @@ class _State extends State<BillPage> {
 
   Widget _body() {
     num subTotal = _subTotalAmount();
+    num tax = Repository.get().settings.taxPercentage;
+    num tip = Repository.get().settings.tipPercentage;
     return ListView(
       padding: EdgeInsets.all(20),
       children: <Widget>[
@@ -43,8 +45,8 @@ class _State extends State<BillPage> {
         ..._items(),
         SizedBox(height: 15),
         _row("Subtotal", formatter.format(subTotal)),
-        _row("Tax 10%", formatter.format(subTotal * 0.1)),
-        _row("Gratuity 10%", formatter.format(subTotal * 0.1)),
+        _row("Tax ${tax}%", formatter.format(subTotal * tax / 100)),
+        _row("Gratuity ${tip}%", formatter.format(subTotal * tip / 100)),
         SizedBox(height: 15),
         _row("Total", formatter.format(subTotal * 1.2)),
         SizedBox(height: 5),
